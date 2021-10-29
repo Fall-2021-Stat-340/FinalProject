@@ -21,6 +21,7 @@ This dataset is a collection of some of the indicators of economic development t
 3. What is the largest indicator of economic growth?
 4. What is the largest indicator of economic stabilitiy?
 5. Can we find any intersting groupings using GDP as the distance metric? What about other indicators?
+6. Is there any way to measure geopolitical or geographical patterns? (A form of clustering)
 
 ## Variables
 
