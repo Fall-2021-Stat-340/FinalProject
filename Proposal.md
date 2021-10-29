@@ -10,6 +10,15 @@ URL: https://www.kaggle.com/kaggle/world-development-indicators
 
 > The World Development Indicators from the World Bank contain over a thousand annual indicators of economic development from hundreds of countries around the world.
 
+We think this dataset is good because it is a rich dataset so there would be plenty of interesting patterns to find. Also, the conclusions will be grounded in measures of economic development (i.e. "Adolescent fertility rate negatively correlates with GDP"). Since the dataset is so rich we could find both simple and complex patterns (to use more advanced techniques).
+
+## Statistical Questions
+
+1. What interesting or strong correlations between variables are there?
+2. What kinds of claims can we make from this data? How can we confirm them?
+
+## Variables
+
 This dataset has 118 columns for each country (so ~200 rows). There are a lot of interesting colums such as:
 
 - SystemOfNationalAccounts (economic activity)
@@ -18,10 +27,8 @@ This dataset has 118 columns for each country (so ~200 rows). There are a lot of
 - Birth rate, crude (per 1,000 people)
 - CO2 emissions (metric tons per capita)
 
-We think this dataset is good because it is a rich dataset so there would be plenty of interesting patterns to find. Also, the conclusions will be grounded in measures of economic development (i.e. "Adolescent fertility rate negatively correlates with GDP"). Since the dataset is so rich we could find both simple and complex patterns (to use more advanced techniques).
-
-## Statistical Questions
-
-## Variables
-
 ## Methods
+
+- We want to use Monte Carlo simulation to verify
+- Clustering
+- Regression
