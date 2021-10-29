@@ -36,3 +36,4 @@ It's hard to choose what variables we think are the most important right now bec
 - We want to use Monte Carlo simulation to verify
 - Clustering
 - Regression
+- Correlation Matrix: We think that cleaning the data and then running a correlation matrix that includes all the data will be a good way to start exploring the data. This is especially true since this dataset has so many variables from various domains of knowledge (economics, global health, environmental sciences, etc.) so it might be easier to filter out the important variables this way.
