@@ -5,7 +5,7 @@ Names/NetID:
 - Justin Chan: jachan
 - Tambre Hu:
 - Oat Sukcharoenyingyong:
-- James Ma:
+- James Ma: yma255
 - Shawn Riemer:
 
 ## Dataset
@@ -37,7 +37,7 @@ It's hard to choose what variables we think are the most important right now bec
 
 ## Methods
 
-- We want to use Monte Carlo simulation to create confidence intervals of our estimates of our data. Knowing the mean, variance, etc. of our data would be quite useful, and we could use Monte Carlo to create these estimates.
+- Monte Carlo: We want to use Monte Carlo simulation to create confidence intervals of our estimates of our data. Knowing the mean, variance, etc. of our data would be quite useful, and we could use Monte Carlo to create these estimates.
 - Clustering: Clustering by different distance measures and seeing how they compare. Some intersting ones we will try first will be using GDP and metrics that have clear correlations (like high inflation).
 - Regression: Use regression to fit models to our data, experimenting with different options (linear, logistic, multiple, etc.) to discover relationships between different variables.
 - Correlation Matrix: We think that cleaning the data and then running a correlation matrix that includes all the data will be a good way to start exploring the data. This is especially true since this dataset has so many variables from various domains of knowledge (economics, global health, environmental sciences, etc.) so it might be easier to filter out the important variables this way.
