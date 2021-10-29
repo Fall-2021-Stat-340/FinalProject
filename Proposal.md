@@ -3,10 +3,10 @@
 Names/NetID: 
 
 - Justin Chan: jachan
-- Tambre Hu:
-- Oat Sukcharoenyingyong:
+- Tambre Hu: thu53
+- Oat Sukcharoenyingyong: sukcharoenyi
 - James Ma: yma255
-- Shawn Riemer:
+- Shawn Riemer: seriemer
 
 ## Dataset
 
