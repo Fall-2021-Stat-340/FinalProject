@@ -8,9 +8,7 @@ Names/NetID:
 
 URL: https://www.kaggle.com/kaggle/world-development-indicators
 
-> The World Development Indicators from the World Bank contain over a thousand annual indicators of economic development from hundreds of countries around the world.
-
-We think this dataset is good because it is a rich dataset so there would be plenty of interesting patterns to find. Also, the conclusions will be grounded in measures of economic development (i.e. "Adolescent fertility rate negatively correlates with GDP"). Since the dataset is so rich we could find both simple and complex patterns (to use more advanced techniques).
+This dataset is a collection of some of the indicators of economic development the World bank collects. We think this dataset is good because it is a rich dataset so there would be plenty of interesting patterns to find. Also, the conclusions will be grounded in measures of economic development (i.e. "Adolescent fertility rate negatively correlates with GDP"). Since the dataset is so rich we could find both simple and complex patterns (to use more advanced techniques).
 
 ## Statistical Questions
 
