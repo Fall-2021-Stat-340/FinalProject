@@ -15,7 +15,7 @@ URL: https://www.kaggle.com/imdevskp/corona-virus-report
 
 This dataset is about COVID in a geographical and temporal context. There are features like confirmed, deaths, recovered, etc. by country and day. It has a lot of observations and a usabillity score of 10/10 on Kaggle.
 
-## Avery Dataset Proposal: (Voted for by: Oat, James)
+## Avery Dataset Proposal: (Voted for by: Oat, James, Shawn)
 
 URL: https://www.kaggle.com/kaggle/world-development-indicators
 
