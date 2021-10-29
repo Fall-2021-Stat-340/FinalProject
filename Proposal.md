@@ -18,6 +18,9 @@ This dataset is a collection of some of the indicators of economic development t
 
 1. What interesting or strong correlations between variables are there?
 2. What kinds of claims can we make from this data? How can we confirm them?
+3. What is the largest indicator of economic growth?
+4. What is the largest indicator of economic stabilitiy?
+5. Can we find any intersting groupings using GDP as the distance metric? What about other indicators?
 
 ## Variables
 
@@ -34,6 +37,6 @@ It's hard to choose what variables we think are the most important right now bec
 ## Methods
 
 - We want to use Monte Carlo simulation to verify
-- Clustering
+- Clustering: Clustering by different distance measures and seeing how they compare. Some intersting ones we will try first will be using GDP and metrics that have clear correlations (like high inflation).
 - Regression
 - Correlation Matrix: We think that cleaning the data and then running a correlation matrix that includes all the data will be a good way to start exploring the data. This is especially true since this dataset has so many variables from various domains of knowledge (economics, global health, environmental sciences, etc.) so it might be easier to filter out the important variables this way.
