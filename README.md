@@ -6,7 +6,9 @@ Instructions: https://kdlevin-uwstat.github.io/STAT340-Fall2021/projects/STAT340
 
 ## Avery Dataset Proposal: 
 
-In progress
+Under consideration:
+
+- https://gss.norc.org/About-The-GSS
 
 
 ## Shawn Dataset Proposal:
