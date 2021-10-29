@@ -25,6 +25,8 @@ This dataset has 118 columns for each country (so ~200 rows). There are a lot of
 - Birth rate, crude (per 1,000 people)
 - CO2 emissions (metric tons per capita)
 
+It's hard to choose what variables we think are the most important right now because we are unsure what the most significant indicators are of economic growth, success, or stability. However, we feel confident that these inicators *will* result in interesting patterns that will be more than sufficient to do analysis on.
+
 ## Methods
 
 - We want to use Monte Carlo simulation to verify
