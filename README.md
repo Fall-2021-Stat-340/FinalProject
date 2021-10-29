@@ -7,7 +7,7 @@ Instructions: https://kdlevin-uwstat.github.io/STAT340-Fall2021/projects/STAT340
 ## James Dataset Proposal: (Voted for by: )
 URL: https://www.kaggle.com/imakash3011/customer-personality-analysis
 
-This is a dataset that with consumer information such as what they buy and their demographics. Columns are roughly divided into two categories: customer characteristics (age, marital status, etc.) and the products they purchse (meat, wine, etc.) This could be an interesting dataset to explore if we want to analyze consumer behavior. There is a wide variety of methods we could use to discover patterns: clustering, regression, and other methods of exploratory data analysis. This dataset has a usability score of 9.7 and is pretty large (29 columns, 2240 rows).
+This is a dataset with consumer information such as what they buy and their demographics. Columns are roughly divided into two categories: customer characteristics (age, marital status, etc.) and the products they purchse (meat, wine, etc.) This could be an interesting dataset to explore if we want to analyze consumer behavior. There is a wide variety of methods we could use to discover patterns: clustering, regression, and other methods of exploratory data analysis. This dataset has a usability score of 9.7 and is pretty large (29 columns, 2240 rows).
 
 ## Tambre Dataset Propsal: (Voted for by: )
 
