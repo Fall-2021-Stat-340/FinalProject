@@ -4,6 +4,12 @@ This Readme.md file is our proposal.
 
 Instructions: https://kdlevin-uwstat.github.io/STAT340-Fall2021/projects/STAT340_proposal_instructions.pdf
 
+## Tambre Dataset Propsal:
+
+URL: https://www.kaggle.com/imdevskp/corona-virus-report
+
+This dataset is about COVID in a geographical and temporal context. There are features like confirmed, deaths, recovered, etc. by country and day. It has a lot of observations and a usabillity score of 10/10 on Kaggle.
+
 ## Avery Dataset Proposal: 
 
 URL: https://www.kaggle.com/kaggle/world-development-indicators
