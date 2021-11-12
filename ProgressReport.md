@@ -11,6 +11,7 @@ Names/NetID:
 A description of your data set and a summary of your statistical question(s) of interest (you may copy-paste this from your proposal, if you wish). 
 
 This dataset is a comprehensive collection of indicators of economic development for every country that is collected by the World bank. We think this dataset is good because it is a rich dataset so there would be plenty of interesting patterns to find. Also, the conclusions will be grounded in measures of economic development (i.e. "Adolescent fertility rate negatively correlates with GDP"). Since the dataset is so thorough, we can find both simple and complex patterns (using a wide range of techniques). The specific statistical questions that we are aiming to explore and answer throughout our research are as follows:
+
 1.	What indicators have the greatest impact on economic stability?
 2.	How do those indicators relate to each other?
 3.	How do those trends differ between a developed country, the United States, and a developing country, Mexico?
@@ -46,6 +47,12 @@ To accomplish this, we first filtered the number of countries down, as many of t
 To accomplish this, we narrowed the scope of our research to only two countries. Our goal was to select two countries differing in economic stability, which could be achieved by finding one developed country and one developing country. We also wanted to select countries with a wealth of information, which led to us selecting the United States and Mexico. This way we can clearly compare the two to answer our statistical questions. Then we chose a specific year range to analyze. We further filtered the data down to only contain data from 2000-2015. The next step was to find the indicators available for all our remaining data. 
 
 A summary of your next steps (e.g., your goals for the remainder of November, other methods/models you want to try, etc.).
+
+To figure out what indicators impact economic stability, we will use a couple different approaches. First, we can use correlation matrices to visualize the most important features. We can also use model fitting to determine the associated coefficients of each feature when solving for GDP.
+
+Our second question can be answered using Prinical Component Analysis. 
+
+Hypothesis testing will be a useful tool for evaluating the differences between the United States and Mexico. Our null hypotheses will be that there is no difference between how certain features impacts economic stability. 
 
 For our fourth question we hope to do k-means clustering of the other countries using the indicators we found were important in our analysis between the United States and Mexico.
 
