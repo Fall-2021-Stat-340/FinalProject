@@ -1,4 +1,4 @@
-The names and NetIDs of all group members. 
+> The names and NetIDs of all group members. 
 
 Names/NetID:
 
@@ -8,7 +8,7 @@ Names/NetID:
 -	James Ma: yma255
 -	Shawn Riemer: seriemer
 
-A description of your data set and a summary of your statistical question(s) of interest (you may copy-paste this from your proposal, if you wish). 
+> A description of your data set and a summary of your statistical question(s) of interest (you may copy-paste this from your proposal, if you wish). 
 
 This dataset is a comprehensive collection of indicators of economic development for every country that is collected by the World bank. We think this dataset is good because it is a rich dataset so there would be plenty of interesting patterns to find. Also, the conclusions will be grounded in measures of economic development (i.e. "Adolescent fertility rate negatively correlates with GDP"). Since the dataset is so thorough, we can find both simple and complex patterns (using a wide range of techniques). The specific statistical questions that we are aiming to explore and answer throughout our research are as follows:
 
@@ -17,11 +17,11 @@ This dataset is a comprehensive collection of indicators of economic development
 3.	How do those trends differ between a developed country, the United States, and a developing country, Mexico?
 4.	Based on the relationships we found between the United States and Mexico, how could we extend our analysis to other countries and regions of the world?
 
-A brief description of why your group found this data set in particular to be of interest and why your reader should care. 
+> A brief description of why your group found this data set in particular to be of interest and why your reader should care. 
 
 There is so much data available in this dataset that has major significance in the real world: data about health, wealth, energy use and more. Obviously these metrics differ significantly between different countries and regions in the world, but we were curious to see if we could uncover the relationships. It is important to understand why the citizens of one country have more wealth than another, or why some countries have restricted internet access. While we cannot expect to completely solve these questions, as so much goes into them, this data can highlight the main driving forces of those inequalities. 
 
-A description of the variables available in your data set, with more details for the variables that are likely to be relevant to your question (you may copy-paste this from your proposal, if you wish). 
+> A description of the variables available in your data set, with more details for the variables that are likely to be relevant to your question (you may copy-paste this from your proposal, if you wish). 
 
 With over 700 total features there are too many to name them all, but some stand out. Gross Domestic Product (GDP) is a particularly interesting feature, as a country’s economic growth, success, and stability impact so many decisions worldwide. It will be insightful to both predict a country’s GDP based on its other characteristics, as well as finding the impact GDP per capita has on health and other outcomes of the country’s citizens. There are 18 different versions of GDP that we have access to, including GDP per capita, GDP per person employed, and GDP growth (annual %). To simplify our analysis, we will be using just the GDP per capita in US$, (code: NY.GDP.PCAP.CD).
 
@@ -29,9 +29,9 @@ Health metrics are another category of features that we will explore. Among them
 
 Other intriguing indicators include energy use. Numerous different versions of it are included, among them Fossil fuel energy consumption, Energy use per capita, and CO2 emissions (metric tons per capita). As electricity consumption rises across the globe, we can investigate how different countries are managing those changes and see if energy use correlates with other important indicators. Al of the mentioned features will be useful in identifying patterns and clusters when it comes to a country’s health and prosperity.
 
-A block of code showing how to load the data into R (if your data set is too large to permit this, please speak to us promptly). 
+> A block of code showing how to load the data into R (if your data set is too large to permit this, please speak to us promptly). 
 
-The zip file available for the dataset on Kaggle contains more files than necessary. For our analysis we are working with the Indicators.csv file, which we loaded in as shown below. 
+The zip file available for the dataset on Kaggle contains more files than necessary. For our analysis we are working with the Indicators.csv file, which we loaded in and formatted as shown below.
 
 ```{r}
 ind <- read.csv("data/Indicators.csv")
@@ -51,10 +51,9 @@ pivot_wider(
   values_from = Value,
   values_fill = 0
 )
-mex2
 ```
 
-At least one plot summarizing some aspect of the data set that is interesting to you and your group. Your plot should be well-labeled, have an appropriate title, and your document should include a reasonably detailed description of what the plot shows as well as any discussion/interpretation of the contents of the plot (e.g., if the plot shows a clear trend in your data, discuss that trend, why it is or isn’t surprising, etc.). 
+> At least one plot summarizing some aspect of the data set that is interesting to you and your group. Your plot should be well-labeled, have an appropriate title, and your document should include a reasonably detailed description of what the plot shows as well as any discussion/interpretation of the contents of the plot (e.g., if the plot shows a clear trend in your data, discuss that trend, why it is or isn’t surprising, etc.). 
 
 [PLOT & DESCRIPTION]
 
@@ -80,14 +79,15 @@ Mexico
 | FI.RES.TOTL.CD  |  Total reserves (includes gold, current US$) |
 | SP.POP.65UP.TO.ZS  |  Population ages 65 and above (% of total) |
 
-A brief discussion of the progress and/or challenges faced so far in answering your statistical question(s) of interest. This may include a discussion of the methods and models used; issues that arose when downloading and cleaning the data; shortcomings of the methods/models used so far, etc. 
+> A brief discussion of the progress and/or challenges faced so far in answering your statistical question(s) of interest. This may include a discussion of the methods and models used; issues that arose when downloading and cleaning the data; shortcomings of the methods/models used so far, etc. 
 
 While having many columns available means there is a lot of data to explore, there is also a significant amount of missing data. The number of features available for each country ranges from 16 to 1,195. Clearly, we had to make decisions about what countries to perform our analysis on as well as what years to look at, as the data ranges from 1960 to 2015. Some countries have merged or formed since the data began and therefore will not have data for the whole time span, which must be taken into account when performing analysis. There are also more features than rows overall. We therefore cannot try using each feature when making predictions and must instead focus in on specific parts of the data.
 
 To accomplish this, we first filtered the number of countries down, as many of the countries included were actually regions, not countries. We used a csv file of official country codes to filter our data from 247 countries to 203. We chose to utilize a correlation matrix to begin answering our first statistical question, but due to the large number of features the results were not clear. We decided analyzing every country was too ambitious, and that a more focused approach would be better. 
+
 To accomplish this, we narrowed the scope of our research to only two countries. Our goal was to select two countries differing in economic stability, which could be achieved by finding one developed country and one developing country. We also wanted to select countries with a wealth of information, which led to us selecting the United States and Mexico. This way we can clearly compare the two to answer our statistical questions. Then we chose a specific year range to analyze. We further filtered the data down to only contain data from 2000-2015. The next step was to find the indicators available for all our remaining data. 
 
-A summary of your next steps (e.g., your goals for the remainder of November, other methods/models you want to try, etc.).
+> A summary of your next steps (e.g., your goals for the remainder of November, other methods/models you want to try, etc.).
 
 To figure out what indicators impact economic stability, we will use a couple different approaches. First, we can use correlation matrices to visualize the most important features. Then, we can use model fitting to determine the associated coefficients of each feature when predicting GDP. We can experiment with various models (i.e. linear, quadratic) and evaluate the fit/complexity tradeoff between those models. PCA can be used to simplify our models.
 
