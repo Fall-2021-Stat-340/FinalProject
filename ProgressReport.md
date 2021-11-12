@@ -47,6 +47,8 @@ To accomplish this, we narrowed the scope of our research to only two countries.
 
 A summary of your next steps (e.g., your goals for the remainder of November, other methods/models you want to try, etc.).
 
+For our fourth question we hope to do k-means clustering of the other countries using the indicators we found were important in our analysis between the United States and Mexico.
+
 These are the goals we would like to achieve by the listed dates in November.
 
 11/19: Finalize what indicators we want to use and find a correlation with against GDP for the US and Mexico. Also finalize what methods we want to use to answer each of our statistical questions and begin developing those.
