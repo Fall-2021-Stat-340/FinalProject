@@ -1,5 +1,15 @@
 # FinalProject
 
+## Comment
+
+Your statistical questions are WAY too broad here. Pick one question, and perhaps even focus it to one small set of variables. "Are there any interesting correlations between variables" is not a helpful statistical question. Try phrasing your questions as specific questions about specific variables and their relationships, or even as null hypotheses to be tested. You were asked, as part of the assignment, to select a few variables that are likely relevant to your project. Your broad questions meant that you couldn't really do this. You questions about indicators of economic stability are perhaps a good starting direction. There is a variable/model selection problem here, especially because the number of predictors is not that much smaller than the number of observations (~120 predictors, ~200 countries). These tools are the topic of our next few lectures, conveniently.
+
+We are not sure that you have fully explored your data-- the documentation on Kaggle suggests that there are far more indicators than you state (1000s of indicators, per Kaggle?). The lack of specificity in your writeup makes it hard to give you full credit, sadly.
+
+Keith Levin, Nov 4 at 2:02pm
+
+# Proposals
+
 This Readme.md file is our proposal.
 
 Instructions: https://kdlevin-uwstat.github.io/STAT340-Fall2021/projects/STAT340_proposal_instructions.pdf
