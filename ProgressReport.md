@@ -43,5 +43,11 @@ While having many columns available means there is a lot of data to explore, the
 
 To accomplish this, we first filtered the number of countries down, as many of the countries included were actually regions, not countries. We used a csv file of official country codes to filter our data from 247 countries to 203. We chose to utilize a correlation matrix to begin answering our first statistical question, but due to the large number of features the results were not clear. We decided analyzing every country was too ambitious, and that a more focused approach would be better. 
 To accomplish this, we narrowed the scope of our research to only two countries. Our goal was to select two countries differing in economic stability, which could be achieved by finding one developed country and one developing country. We also wanted to select countries with a wealth of information, which led to us selecting the United States and Mexico. This way we can clearly compare the two to answer our statistical questions. Then we chose a specific year range to analyze. We further filtered the data down to only contain data from 2000-2015. The next step was to find the indicators available for all our remaining data. 
+
 A summary of your next steps (e.g., your goals for the remainder of November, other methods/models you want to try, etc.).
+
+These are the goals we would like to achieve by the listed dates in November.
+11/19: Finalize what indicators we want to use and find a correlation with against GDP for the US and Mexico. Also finalize what methods we want to use to answer each of our statistical questions and begin developing those.
+11/26: Decide on and create the necessary plots and graphs for each of the models/methods we chose to use. Based on the results we found in comparing the results from the US and Mexico, make any necessary adjustments to the models/methods we chose to use to analyze the data. Once we understand the results of our findings, we will begin exploring how these results can be duplicated onto other countries.
+11/30: After finalizing our data and analysis, we will elaborate on said results and communicate our findings. We will then begin fleshing out our report and making it cohesive so that it effectively shows the significant findings of each of our statistical questions. 
 	 
