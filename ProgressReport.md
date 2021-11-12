@@ -58,6 +58,20 @@ At least one plot summarizing some aspect of the data set that is interesting to
 
 [PLOT & DESCRIPTION]
 
+| Code | Name |
+|-|-|
+| AG.LND.ARBL.HA.PC  |  Arable land (hectares per person) |
+| EN.URB.MCTY  |  Population in urban agglomerations of more than 1 million |
+| NE.IMP.GNFS.ZS  |  Imports of goods and services (% of GDP) |
+| NY.GSR.NFCY.CD  |  Net income from abroad (current US$) |
+| NE.TRD.GNFS.ZS  |  Trade (% of GDP) |
+| SP.POP.TOTL  |  Population, total |
+| TG.VAL.TOTL.GD.ZS  |  Merchandise trade (% of GDP) |
+| NY.TAX.NIND.CN  |  Net taxes on products (current LCU) |
+| EN.POP.DNST  |  Population density (people per sq. km of land area) |
+| FI.RES.TOTL.CD  |  Total reserves (includes gold, current US$) |
+| SP.POP.65UP.TO.ZS  |  Population ages 65 and above (% of total) |
+
 A brief discussion of the progress and/or challenges faced so far in answering your statistical question(s) of interest. This may include a discussion of the methods and models used; issues that arose when downloading and cleaning the data; shortcomings of the methods/models used so far, etc. 
 
 While having many columns available means there is a lot of data to explore, there is also a significant amount of missing data. The number of features available for each country ranges from 16 to 1,195. Clearly, we had to make decisions about what countries to perform our analysis on as well as what years to look at, as the data ranges from 1960 to 2015. Some countries have merged or formed since the data began and therefore will not have data for the whole time span, which must be taken into account when performing analysis. There are also more features than rows overall. We therefore cannot try using each feature when making predictions and must instead focus in on specific parts of the data.
