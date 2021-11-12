@@ -33,7 +33,26 @@ A block of code showing how to load the data into R (if your data set is too lar
 
 The zip file available for the dataset on Kaggle contains more files than necessary. For our analysis we are working with the Indicators.csv file, which we loaded in as shown below. 
 
-[CODE]
+```{r}
+ind <- read.csv("data/Indicators.csv")
+mex <- ind %>% filter(CountryName == "Mexico")
+mex_ <- mex %>% group_by(IndicatorCode) %>% 
+  summarise(
+    n = n(),
+    CountryName,
+    Year,
+    IndicatorCode,
+    IndicatorName = str_replace_all(IndicatorName, " ", "_"),
+    Value
+  ) %>% filter(n > 50) %>% ungroup()
+mex2 <- mex_ %>% select(CountryName, Year, IndicatorCode, Value) %>%
+pivot_wider(
+  names_from = IndicatorCode,
+  values_from = Value,
+  values_fill = 0
+)
+mex2
+```
 
 At least one plot summarizing some aspect of the data set that is interesting to you and your group. Your plot should be well-labeled, have an appropriate title, and your document should include a reasonably detailed description of what the plot shows as well as any discussion/interpretation of the contents of the plot (e.g., if the plot shows a clear trend in your data, discuss that trend, why it is or isn’t surprising, etc.). 
 
