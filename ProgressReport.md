@@ -47,7 +47,12 @@ To accomplish this, we narrowed the scope of our research to only two countries.
 A summary of your next steps (e.g., your goals for the remainder of November, other methods/models you want to try, etc.).
 
 These are the goals we would like to achieve by the listed dates in November.
+
 11/19: Finalize what indicators we want to use and find a correlation with against GDP for the US and Mexico. Also finalize what methods we want to use to answer each of our statistical questions and begin developing those.
+
+
 11/26: Decide on and create the necessary plots and graphs for each of the models/methods we chose to use. Based on the results we found in comparing the results from the US and Mexico, make any necessary adjustments to the models/methods we chose to use to analyze the data. Once we understand the results of our findings, we will begin exploring how these results can be duplicated onto other countries.
+
+
 11/30: After finalizing our data and analysis, we will elaborate on said results and communicate our findings. We will then begin fleshing out our report and making it cohesive so that it effectively shows the significant findings of each of our statistical questions. 
 	 
