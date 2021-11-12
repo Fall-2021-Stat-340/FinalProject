@@ -48,9 +48,9 @@ To accomplish this, we narrowed the scope of our research to only two countries.
 
 A summary of your next steps (e.g., your goals for the remainder of November, other methods/models you want to try, etc.).
 
-To figure out what indicators impact economic stability, we will use a couple different approaches. First, we can use correlation matrices to visualize the most important features. We can also use model fitting to determine the associated coefficients of each feature when solving for GDP.
+To figure out what indicators impact economic stability, we will use a couple different approaches. First, we can use correlation matrices to visualize the most important features. Then, we can use model fitting to determine the associated coefficients of each feature when predicting GDP. We can experiment with various models (i.e. linear, quadratic) and evaluate the fit/complexity tradeoff between those models. PCA can be used to simplify our models.
 
-Our second question can be answered using Prinical Component Analysis. 
+Our second question can be answered by regressing our predictors on each other. We can see if they are correlated with each other or not, and if so, whether or not they all predict our response variable (GDP). For that, we can pick out individual predictors and assess how well they predict our response variable, and compare those performances to when all predictors are used. This can allow us to eliminate predictors that don't correlate well with our response and are only correlated with other predictors that do predict our response. PCA can also be used here to further simplify our models by finding the most important component directions.
 
 Hypothesis testing will be a useful tool for evaluating the differences between the United States and Mexico. Our null hypotheses will be that there is no difference between how certain features impacts economic stability. 
 
