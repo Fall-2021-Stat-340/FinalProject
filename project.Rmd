@@ -15,12 +15,12 @@ library(tidyr)
 ```
 
 ```{r}
-country = read.csv("Country.csv")
+country = read.csv("data/Country.csv")
 head(country, 3)
 ```
 
 ```{r}
-ind = read.csv("Indicators.csv")
+ind = read.csv("data/Indicators.csv")
 head(ind, 3)
 ```
 
