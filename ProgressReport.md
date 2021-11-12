@@ -57,13 +57,17 @@ pivot_wider(
 
 [PLOT & DESCRIPTION]
 
-![us](https://user-images.githubusercontent.com/53503018/141596183-3dde91c0-2082-4b25-a088-683a8b701a40.png)
+<!-- ![us](https://user-images.githubusercontent.com/53503018/141596183-3dde91c0-2082-4b25-a088-683a8b701a40.png) -->
 
-United States
 
-![mexico](https://user-images.githubusercontent.com/53503018/141595932-960c7362-6bfa-4265-875f-dc1a844edcbf.png)
+<!-- ![mexico](https://user-images.githubusercontent.com/53503018/141595932-960c7362-6bfa-4265-875f-dc1a844edcbf.png) -->
 
-Mexico
+<div align="center">
+	<img width="45%" src="https://user-images.githubusercontent.com/53503018/141596183-3dde91c0-2082-4b25-a088-683a8b701a40.png"></img>
+	<img width="45%" src="https://user-images.githubusercontent.com/53503018/141595932-960c7362-6bfa-4265-875f-dc1a844edcbf.png"></img>
+	<p>US and Mexico</p>
+</div>
+
 
 | Code | Name |
 |-|-|
