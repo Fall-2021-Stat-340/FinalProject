@@ -55,6 +55,12 @@ pivot_wider(
 
 > At least one plot summarizing some aspect of the data set that is interesting to you and your group. Your plot should be well-labeled, have an appropriate title, and your document should include a reasonably detailed description of what the plot shows as well as any discussion/interpretation of the contents of the plot (e.g., if the plot shows a clear trend in your data, discuss that trend, why it is or isn’t surprising, etc.).
 
+A large portion of our work up to this point was data exploration. One tool that we used was creating correlation matricies between all the indicators for different countries. The actual matricies that we used were `193` x `193`, so in the below correlation matrix we selected a few that we found interesting. To actually choose the below indicators we filtered for indicators highly correlated with GDP and selected a few we found interesting.
+
+One thing that we learned from these matricies is that there are a lot of strong correlations that we are actually *not* interested in. For example, some indicators such as government expenditure are highly correlated with GDP, but this is less interesting because the measurement is in a similar domain. What we are more interested are correlations or patterns across domains such as a relation between women's education and GDP. One solution to do this may be grouping indicators by domain, but we are still unsure of a objective way to do this. Regardless, these correlation matricies are one way we are attempting to show relations between indicators.
+
+Similarly, the plot tells us there are correlations between things such as `Population in urban agglomerations of more than 1 million` and GDP. As mentioned before, what is actually more salient is the amount of noise we found between these variables. It suggests we should attempt to filter these indicators more or measure more complex relations. One option is to filter for indicators with the riches data (most observations). We are also considering using methods to decrease the dimensionality of our data with PCA.
+
 <div align="center">
 	<img width="45%" src="https://user-images.githubusercontent.com/53503018/141596183-3dde91c0-2082-4b25-a088-683a8b701a40.png"></img>
 	<img width="45%" src="https://user-images.githubusercontent.com/53503018/141595932-960c7362-6bfa-4265-875f-dc1a844edcbf.png"></img>
