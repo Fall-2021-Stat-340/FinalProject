@@ -53,21 +53,15 @@ pivot_wider(
 )
 ```
 
-> At least one plot summarizing some aspect of the data set that is interesting to you and your group. Your plot should be well-labeled, have an appropriate title, and your document should include a reasonably detailed description of what the plot shows as well as any discussion/interpretation of the contents of the plot (e.g., if the plot shows a clear trend in your data, discuss that trend, why it is or isn’t surprising, etc.). 
-
-[PLOT & DESCRIPTION]
-
-<!-- ![us](https://user-images.githubusercontent.com/53503018/141596183-3dde91c0-2082-4b25-a088-683a8b701a40.png) -->
-
-
-<!-- ![mexico](https://user-images.githubusercontent.com/53503018/141595932-960c7362-6bfa-4265-875f-dc1a844edcbf.png) -->
+> At least one plot summarizing some aspect of the data set that is interesting to you and your group. Your plot should be well-labeled, have an appropriate title, and your document should include a reasonably detailed description of what the plot shows as well as any discussion/interpretation of the contents of the plot (e.g., if the plot shows a clear trend in your data, discuss that trend, why it is or isn’t surprising, etc.).
 
 <div align="center">
 	<img width="45%" src="https://user-images.githubusercontent.com/53503018/141596183-3dde91c0-2082-4b25-a088-683a8b701a40.png"></img>
 	<img width="45%" src="https://user-images.githubusercontent.com/53503018/141595932-960c7362-6bfa-4265-875f-dc1a844edcbf.png"></img>
-	<p>US and Mexico</p>
+	<p>US on the left and Mexico on the right</p>
 </div>
 
+For ease of coding we labeled the plots with `Indicator Code` instead of `Indicator Name`. Here is the mapping from `Indicator Code` to `Indicator Name`:
 
 | Code | Name |
 |-|-|
