@@ -21,22 +21,28 @@ head(country, 3)
 
 ```{r}
 ind = read.csv("Indicators.csv")
-head(ind, 3)
+head(ind, 300)
 ```
 
 ```{r}
 ind %>%
-  filter(CountryName=="United States" & IndicatorCode=="SP.ADO.TFRT") %>%
-  ggplot(aes(x=Year, y=Value)) +
-  geom_point()
+  filter(CountryCode %in% countries$Alpha.3.code) %>% 
+  group_by(CountryName) %>% 
+  summarise(
+    n = n()
+  )
+  
 ```
 
 ```{r}
 ind %>%
-  filter(CountryName=="United States" & Year==2010)
+  group_by(IndicatorCode) %>%
+  summarize(indicator_name = IndicatorName,
+            n = n())
 ```
 
 ```{r}
-country
+countries <- read.csv("wikipedia-iso-country-codes.csv")
+countries
 ```
 
