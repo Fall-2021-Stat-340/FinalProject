@@ -15,34 +15,28 @@ library(tidyr)
 ```
 
 ```{r}
-country = read.csv("Country.csv")
+country = read.csv("data/Country.csv")
 head(country, 3)
 ```
 
 ```{r}
-ind = read.csv("Indicators.csv")
-head(ind, 300)
+ind = read.csv("data/Indicators.csv")
+head(ind, 3)
 ```
 
 ```{r}
 ind %>%
-  filter(CountryCode %in% countries$Alpha.3.code) %>% 
-  group_by(CountryName) %>% 
-  summarise(
-    n = n()
-  )
-  
+  filter(CountryName=="United States" & IndicatorCode=="SP.ADO.TFRT") %>%
+  ggplot(aes(x=Year, y=Value)) +
+  geom_point()
 ```
 
 ```{r}
 ind %>%
-  group_by(IndicatorCode) %>%
-  summarize(indicator_name = IndicatorName,
-            n = n())
+  filter(CountryName=="United States" & Year==2010)
 ```
 
 ```{r}
-countries <- read.csv("wikipedia-iso-country-codes.csv")
-countries
+country
 ```
 
