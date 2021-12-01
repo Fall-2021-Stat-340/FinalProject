@@ -2,39 +2,29 @@
 title: "Project"
 author: "Shawn Riemer"
 date: "11/11/2021"
-output: html_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r}
 library(tidyverse)
 library(tidyr)
 library(corrplot)
 library(corrr)
 ```
 
-```{r}
-country = read.csv("data/Country.csv")
-head(country, 3)
-```
+## Read in Data
 
 ```{r}
-ind <- read.csv("data/Indicators.csv")
-# head(ind, 3)
-# ind %>% str()
-ind$CountryName %>% unique() %>% length()
-# ind$CountryCode %>% unique() %>% length()
-ind$IndicatorName %>% unique() %>% length()
-ind$IndicatorCode %>% unique() %>% length()
-# ind$Year %>% unique() %>% length()
-# ind$Value %>% length()
-# ind$Value %>% is.na() %>% sum()
-# summary(ind)
+country <- read_csv("data/Country.csv", col_types = cols())
+ind <- read_csv("data/Indicators.csv", col_types = cols())
 ```
 
+## First check-in
+
+### Focus on Mexico
 
 ```{r}
 mex <- ind %>% filter(CountryName == "Mexico")
@@ -50,9 +40,9 @@ mex_ <- mex %>% group_by(IndicatorCode) %>%
   ) %>% filter(n > 50) %>% ungroup()
 ```
 
+### Focus on United States
 
 ```{r}
-ind <- read.csv("data/Indicators.csv")
 mex <- ind %>% filter(CountryName == "United States")
 mex_ <- mex %>% group_by(IndicatorCode) %>% 
   summarise(
@@ -72,6 +62,7 @@ pivot_wider(
 mex2
 ```
 
+### Correlation Matrix
 
 ```{r}
 # mex3 <- mex2 %>% select(-c(CountryName, Year, IndicatorCode)) %>% 
@@ -86,35 +77,25 @@ code_to_name <- function(code) {
   uh$IndicatorName
 }
 
+# code_to_name("AG.LND.ARBL.HA.PC")
+# code_to_name("EN.URB.MCTY")
+# code_to_name("NE.IMP.GNFS.ZS")
+# code_to_name("NY.GSR.NFCY.CD")
+# code_to_name("NE.TRD.GNFS.ZS")
+# code_to_name("SP.POP.TOTL")
+# code_to_name("TG.VAL.TOTL.GD.ZS")
+# code_to_name("NY.TAX.NIND.CN")
+# code_to_name("EN.POP.DNST")
+# code_to_name("FI.RES.TOTL.CD")
+# code_to_name("SP.POP.65UP.TO.ZS")
+# code_to_name("NY.GDP.DEFL.ZS")
+# code_to_name("NY.GDP.MKTP.KN")
+# code_to_name("NY.GNP.MKTP.CN")
 
-code_to_name("AG.LND.ARBL.HA.PC")
-code_to_name("EN.URB.MCTY")
-code_to_name("NE.IMP.GNFS.ZS")
-code_to_name("NY.GSR.NFCY.CD")
-code_to_name("NE.TRD.GNFS.ZS")
-code_to_name("SP.POP.TOTL")
-code_to_name("TG.VAL.TOTL.GD.ZS")
-code_to_name("NY.TAX.NIND.CN")
-code_to_name("EN.POP.DNST")
-code_to_name("FI.RES.TOTL.CD")
-code_to_name("SP.POP.65UP.TO.ZS")
-
-code_to_name("")
-code_to_name("NY.GDP.DEFL.ZS")
-code_to_name("NY.GDP.MKTP.KN")
-code_to_name("NY.GNP.MKTP.CN")
-code_to_name("")
-code_to_name("")
-code_to_name("")
-
-
-# v <- c(AG.LND.ARBL.HA.PC, EN.URB.MCTY, NE.IMP.GNFS.ZS, NY.GSR.NFCY.CD, NE.TRD.GNFS.ZS, SP.POP.TOTL, TG.VAL.TOTL.GD.ZS, NY.TAX.NIND.CN, EN.POP.DNST, FI.RES.TOTL.CD, SP.POP.65UP.TO.ZS)
 v <- c("AG.LND.ARBL.HA.PC", "EN.URB.MCTY", "NE.IMP.GNFS.ZS", "NY.GSR.NFCY.CD", "NE.TRD.GNFS.ZS", "SP.POP.TOTL", "TG.VAL.TOTL.GD.ZS", "NY.TAX.NIND.CN", "EN.POP.DNST", "FI.RES.TOTL.CD", "SP.POP.65UP.TO.ZS")
-
-
-
 ```
 
+### Find highly correlated with GDP
 
 ```{r}
 mex3['NY.GDP.PCAP.CD'] %>% filter(abs(NY.GDP.PCAP.CD) < 0.95 & abs(NY.GDP.PCAP.CD) > 0.3) %>% arrange(-abs(NY.GDP.PCAP.CD))
@@ -133,6 +114,7 @@ mex2_ <- mex2 %>% select(-c(CountryName, Year))
 cor(mex2_) %>% data.frame()
 ```
 
+### Correlation Matrix
 
 ```{r}
 mex2_ <- mex2_ %>% select(AG.LND.ARBL.HA.PC,
@@ -155,17 +137,17 @@ mex2_ <- mex2_ %>% select(AG.LND.ARBL.HA.PC,
 
 cor(mex2_) %>% corrplot(diag = FALSE, order = 'AOE')
 
-code_to_name("AG.LND.ARBL.HA.PC")
-code_to_name("EN.URB.MCTY")
-code_to_name("NE.IMP.GNFS.ZS")
-code_to_name("NY.GSR.NFCY.CD")
-code_to_name("NE.TRD.GNFS.ZS")
-code_to_name("SP.POP.TOTL")
-code_to_name("TG.VAL.TOTL.GD.ZS")
-code_to_name("NY.TAX.NIND.CN")
-code_to_name("EN.POP.DNST")
-code_to_name("FI.RES.TOTL.CD")
-code_to_name("SP.POP.65UP.TO.ZS")
+# code_to_name("AG.LND.ARBL.HA.PC")
+# code_to_name("EN.URB.MCTY")
+# code_to_name("NE.IMP.GNFS.ZS")
+# code_to_name("NY.GSR.NFCY.CD")
+# code_to_name("NE.TRD.GNFS.ZS")
+# code_to_name("SP.POP.TOTL")
+# code_to_name("TG.VAL.TOTL.GD.ZS")
+# code_to_name("NY.TAX.NIND.CN")
+# code_to_name("EN.POP.DNST")
+# code_to_name("FI.RES.TOTL.CD")
+# code_to_name("SP.POP.65UP.TO.ZS")
 
 # corrplot.mixed(
 #   round(cor(mex2_), 2),
@@ -188,6 +170,9 @@ code_to_name("SP.POP.65UP.TO.ZS")
 | FI.RES.TOTL.CD  |  Total reserves (includes gold, current US$) |
 | SP.POP.65UP.TO.ZS  |  Population ages 65 and above (% of total) |
 
+## Data sparsity exploration
+
+### Testing Number of Values
 
 ```{r}
 # ind %>% group_by(CountryName) %>% 
@@ -212,6 +197,7 @@ ind %>% group_by(CountryName) %>%
     n_ind = IndicatorName %>% unique() %>% length()
   ) %>% arrange(CountryName)
 ```
+### What Indicators are in ALL conutries?
 
 ```{r}
 # what indicators are in ALL countries?
@@ -231,13 +217,9 @@ ind %>% group_by(IndicatorName) %>%
   ) %>% arrange(-n_val)
 ```
 
-
-
 ```{r}
 foo %>% filter( n_count > 200)
 ```
-
-
 
 ```{r}
 ind
@@ -246,13 +228,3 @@ ind %>%
   ggplot(aes(x=Year, y=Value)) +
   geom_point()
 ```
-
-```{r}
-ind %>%
-  filter(CountryName=="United States" & Year==2010)
-```
-
-```{r}
-country
-```
-
