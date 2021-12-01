@@ -22,7 +22,7 @@ head(country, 3)
 ```
 
 ```{r}
-ind = read.csv("data/Indicators.csv")
+ind <- read.csv("data/Indicators.csv")
 # head(ind, 3)
 # ind %>% str()
 ind$CountryName %>% unique() %>% length()
@@ -52,11 +52,19 @@ mex_ <- mex %>% group_by(IndicatorCode) %>%
 
 
 ```{r}
-# mex2 <- mex_ %>% select(CountryName, Year, IndicatorCode, IndicatorName, Value) %>% 
+ind <- read.csv("data/Indicators.csv")
+mex <- ind %>% filter(CountryName == "United States")
+mex_ <- mex %>% group_by(IndicatorCode) %>% 
+  summarise(
+    n = n(),
+    CountryName,
+    Year,
+    IndicatorCode,
+    IndicatorName = str_replace_all(IndicatorName, " ", "_"),
+    Value
+  ) %>% filter(n > 50) %>% ungroup()
 mex2 <- mex_ %>% select(CountryName, Year, IndicatorCode, Value) %>%
-# mex2 <- mex_ %>% select(CountryName, Year, IndicatorName, Value) %>%
 pivot_wider(
-  # names_from = IndicatorName,
   names_from = IndicatorCode,
   values_from = Value,
   values_fill = 0
@@ -81,15 +89,34 @@ code_to_name <- function(code) {
 
 code_to_name("AG.LND.ARBL.HA.PC")
 code_to_name("EN.URB.MCTY")
-code_to_name("NE.CON.PETC.CN")
+code_to_name("NE.IMP.GNFS.ZS")
+code_to_name("NY.GSR.NFCY.CD")
+code_to_name("NE.TRD.GNFS.ZS")
+code_to_name("SP.POP.TOTL")
+code_to_name("TG.VAL.TOTL.GD.ZS")
+code_to_name("NY.TAX.NIND.CN")
+code_to_name("EN.POP.DNST")
+code_to_name("FI.RES.TOTL.CD")
+code_to_name("SP.POP.65UP.TO.ZS")
+
 code_to_name("")
-code_to_name("")
+code_to_name("NY.GDP.DEFL.ZS")
+code_to_name("NY.GDP.MKTP.KN")
+code_to_name("NY.GNP.MKTP.CN")
 code_to_name("")
 code_to_name("")
 code_to_name("")
 
-# AG.LND.ARBL.HA.PC	
 
+# v <- c(AG.LND.ARBL.HA.PC, EN.URB.MCTY, NE.IMP.GNFS.ZS, NY.GSR.NFCY.CD, NE.TRD.GNFS.ZS, SP.POP.TOTL, TG.VAL.TOTL.GD.ZS, NY.TAX.NIND.CN, EN.POP.DNST, FI.RES.TOTL.CD, SP.POP.65UP.TO.ZS)
+v <- c("AG.LND.ARBL.HA.PC", "EN.URB.MCTY", "NE.IMP.GNFS.ZS", "NY.GSR.NFCY.CD", "NE.TRD.GNFS.ZS", "SP.POP.TOTL", "TG.VAL.TOTL.GD.ZS", "NY.TAX.NIND.CN", "EN.POP.DNST", "FI.RES.TOTL.CD", "SP.POP.65UP.TO.ZS")
+
+
+
+```
+
+
+```{r}
 mex3['NY.GDP.PCAP.CD'] %>% filter(abs(NY.GDP.PCAP.CD) < 0.95 & abs(NY.GDP.PCAP.CD) > 0.3) %>% arrange(-abs(NY.GDP.PCAP.CD))
 ```
 
@@ -103,12 +130,63 @@ mex3['NY.GDP.PCAP.CD'] %>% filter(abs(NY.GDP.PCAP.CD) > 0.95 & abs(NY.GDP.PCAP.C
 
 mex2_ <- mex2 %>% select(-c(CountryName, Year))
 
+cor(mex2_) %>% data.frame()
+```
+
+
+```{r}
+mex2_ <- mex2_ %>% select(AG.LND.ARBL.HA.PC,
+                          EN.URB.MCTY,
+                          NE.IMP.GNFS.ZS,
+                          NY.GSR.NFCY.CD,
+                          NE.TRD.GNFS.ZS,
+                          SP.POP.TOTL,
+                          TG.VAL.TOTL.GD.ZS,
+                          # NY.TAX.NIND.CN,
+                          EN.POP.DNST,
+                          FI.RES.TOTL.CD,
+                          SP.POP.65UP.TO.ZS)
+
+# corrplot.mixed(
+#   round(cor(mex2_), 2),
+#   lower = "number",
+#   upper = "color"
+# )
+
+cor(mex2_) %>% corrplot(diag = FALSE, order = 'AOE')
+
+code_to_name("AG.LND.ARBL.HA.PC")
+code_to_name("EN.URB.MCTY")
+code_to_name("NE.IMP.GNFS.ZS")
+code_to_name("NY.GSR.NFCY.CD")
+code_to_name("NE.TRD.GNFS.ZS")
+code_to_name("SP.POP.TOTL")
+code_to_name("TG.VAL.TOTL.GD.ZS")
+code_to_name("NY.TAX.NIND.CN")
+code_to_name("EN.POP.DNST")
+code_to_name("FI.RES.TOTL.CD")
+code_to_name("SP.POP.65UP.TO.ZS")
+
 # corrplot.mixed(
 #   round(cor(mex2_), 2),
 #   lower = "number",
 #   upper = "color"
 # )
 ```
+
+| Code | Name |
+|-|-|
+| AG.LND.ARBL.HA.PC  |  Arable land (hectares per person) |
+| EN.URB.MCTY  |  Population in urban agglomerations of more than 1 million |
+| NE.IMP.GNFS.ZS  |  Imports of goods and services (% of GDP) |
+| NY.GSR.NFCY.CD  |  Net income from abroad (current US$) |
+| NE.TRD.GNFS.ZS  |  Trade (% of GDP) |
+| SP.POP.TOTL  |  Population, total |
+| TG.VAL.TOTL.GD.ZS  |  Merchandise trade (% of GDP) |
+| NY.TAX.NIND.CN  |  Net taxes on products (current LCU) |
+| EN.POP.DNST  |  Population density (people per sq. km of land area) |
+| FI.RES.TOTL.CD  |  Total reserves (includes gold, current US$) |
+| SP.POP.65UP.TO.ZS  |  Population ages 65 and above (% of total) |
 
 
 ```{r}
@@ -126,6 +204,13 @@ ind %>% group_by(CountryName) %>%
     n_year = Year %>% unique() %>% length(),
     n_ind = IndicatorName %>% unique() %>% length()
   ) %>% arrange(n, n_ind)
+
+ind %>% group_by(CountryName) %>% 
+  summarise(
+    n = n(),
+    n_year = Year %>% unique() %>% length(),
+    n_ind = IndicatorName %>% unique() %>% length()
+  ) %>% arrange(CountryName)
 ```
 
 ```{r}
