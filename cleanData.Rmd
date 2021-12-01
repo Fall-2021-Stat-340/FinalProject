@@ -1,0 +1,95 @@
+---
+title: "R Notebook"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(tidyr)
+```
+
+```{r}
+country <- read_csv("data/Country.csv")
+head(country, 3)
+```
+
+```{r}
+ind <- read_csv("data/Indicators.csv")
+head(ind, 10)
+```
+
+```{r}
+# GDP per capita
+ind %>%
+  filter(IndicatorCode=="NY.GDP.PCAP.CD") %>%
+  group_by(CountryName) %>%
+  summarize(n = n()) %>%
+  arrange(desc(n))
+```
+
+```{r}
+# Mobile cellular subscriptions (per 100 people)
+ind %>%
+  filter(IndicatorCode=="IT.CEL.SETS.P2") %>%
+  group_by(CountryName) %>%
+  summarize(n = n()) %>%
+  arrange(desc(n))
+```
+
+```{r}
+# Mortality rate, infant (per 1,000 live births)
+ind %>%
+  filter(IndicatorCode=="SP.DYN.IMRT.IN") %>%
+  group_by(CountryName) %>%
+  summarize(n = n()) %>%
+  arrange(desc(n))
+```
+
+```{r}
+# Services, etc., value added (% of GDP)
+ind %>%
+  filter(IndicatorCode=="NV.SRV.TETC.ZS") %>%
+  group_by(CountryName) %>%
+  summarize(n = n()) %>%
+  arrange(desc(n))
+```
+```{r}
+# Manufacturing, etc., value added (% of GDP)
+ind %>%
+  filter(IndicatorCode=="NV.IND.MANF.ZS") %>%
+  group_by(CountryName) %>%
+  summarize(n = n()) %>%
+  arrange(desc(n))
+```
+```{r}
+# Industry, etc., value added (% of GDP)
+ind %>%
+  filter(IndicatorCode=="NV.IND.TOTL.ZS") %>%
+  group_by(CountryName) %>%
+  summarize(n = n()) %>%
+  arrange(desc(n))
+```
+
+```{r}
+head(ind, 100)
+```
+Mobile cellular subscriptions (per 100 people)
+IT.CEL.SETS.P2
+Mortality rate, infant (per 1,000 live births)
+SP.DYN.IMRT.IN
+Services, etc., value added (% of GDP)
+NV.SRV.TETC.ZS
+
+Manufacturing, value added (% of GDP)
+NV.IND.MANF.ZS
+
+Industry, value added (% of GDP)
+NV.IND.TOTL.ZS
+
+```{r}
+ind %>% filter(CountryName=="Bangladesh")
+```
