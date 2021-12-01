@@ -24,9 +24,9 @@ ind <- read_csv("data/Indicators.csv", col_types = cols())
 
 ## First check-in
 
-### Focus on Mexico
+### Focus on Mexico and United States
 
-```{r}
+```{r eval=FALSE}
 mex <- ind %>% filter(CountryName == "Mexico")
 
 mex_ <- mex %>% group_by(IndicatorCode) %>% 
@@ -38,11 +38,6 @@ mex_ <- mex %>% group_by(IndicatorCode) %>%
     IndicatorName = str_replace_all(IndicatorName, " ", "_"),
     Value
   ) %>% filter(n > 50) %>% ungroup()
-```
-
-### Focus on United States
-
-```{r}
 mex <- ind %>% filter(CountryName == "United States")
 mex_ <- mex %>% group_by(IndicatorCode) %>% 
   summarise(
@@ -64,7 +59,7 @@ mex2
 
 ### Correlation Matrix
 
-```{r}
+```{r eval=FALSE}
 # mex3 <- mex2 %>% select(-c(CountryName, Year, IndicatorCode)) %>% 
 mex3 <- mex2 %>% select(-c(CountryName, Year)) %>% 
   cor() %>% 
@@ -97,12 +92,8 @@ v <- c("AG.LND.ARBL.HA.PC", "EN.URB.MCTY", "NE.IMP.GNFS.ZS", "NY.GSR.NFCY.CD", "
 
 ### Find highly correlated with GDP
 
-```{r}
+```{r eval=FALSE}
 mex3['NY.GDP.PCAP.CD'] %>% filter(abs(NY.GDP.PCAP.CD) < 0.95 & abs(NY.GDP.PCAP.CD) > 0.3) %>% arrange(-abs(NY.GDP.PCAP.CD))
-```
-
-
-```{r}
 # mex3['GDP_per_capita_(current_US$)	'] %>% arrange(GDP_per_capita_(current_US$))
 # mex3['NY.GDP.PCAP.CD'] %>% arrange(NY.GDP.PCAP.CD)
 
@@ -116,7 +107,7 @@ cor(mex2_) %>% data.frame()
 
 ### Correlation Matrix
 
-```{r}
+```{r eval=FALSE}
 mex2_ <- mex2_ %>% select(AG.LND.ARBL.HA.PC,
                           EN.URB.MCTY,
                           NE.IMP.GNFS.ZS,
@@ -156,47 +147,33 @@ cor(mex2_) %>% corrplot(diag = FALSE, order = 'AOE')
 # )
 ```
 
-| Code | Name |
-|-|-|
-| AG.LND.ARBL.HA.PC  |  Arable land (hectares per person) |
-| EN.URB.MCTY  |  Population in urban agglomerations of more than 1 million |
-| NE.IMP.GNFS.ZS  |  Imports of goods and services (% of GDP) |
-| NY.GSR.NFCY.CD  |  Net income from abroad (current US$) |
-| NE.TRD.GNFS.ZS  |  Trade (% of GDP) |
-| SP.POP.TOTL  |  Population, total |
-| TG.VAL.TOTL.GD.ZS  |  Merchandise trade (% of GDP) |
-| NY.TAX.NIND.CN  |  Net taxes on products (current LCU) |
-| EN.POP.DNST  |  Population density (people per sq. km of land area) |
-| FI.RES.TOTL.CD  |  Total reserves (includes gold, current US$) |
-| SP.POP.65UP.TO.ZS  |  Population ages 65 and above (% of total) |
+<!-- | Code | Name | -->
+<!-- |-|-| -->
+<!-- | AG.LND.ARBL.HA.PC  |  Arable land (hectares per person) | -->
+<!-- | EN.URB.MCTY  |  Population in urban agglomerations of more than 1 million | -->
+<!-- | NE.IMP.GNFS.ZS  |  Imports of goods and services (% of GDP) | -->
+<!-- | NY.GSR.NFCY.CD  |  Net income from abroad (current US$) | -->
+<!-- | NE.TRD.GNFS.ZS  |  Trade (% of GDP) | -->
+<!-- | SP.POP.TOTL  |  Population, total | -->
+<!-- | TG.VAL.TOTL.GD.ZS  |  Merchandise trade (% of GDP) | -->
+<!-- | NY.TAX.NIND.CN  |  Net taxes on products (current LCU) | -->
+<!-- | EN.POP.DNST  |  Population density (people per sq. km of land area) | -->
+<!-- | FI.RES.TOTL.CD  |  Total reserves (includes gold, current US$) | -->
+<!-- | SP.POP.65UP.TO.ZS  |  Population ages 65 and above (% of total) | -->
 
 ## Data sparsity exploration
 
 ### Testing Number of Values
 
 ```{r}
-# ind %>% group_by(CountryName) %>% 
-#   summarise(
-#     n_ind_many_year = group_by(IndicatorName) %>% 
-#       summarise(
-#         
-#       )
-#   )
-
 ind %>% group_by(CountryName) %>% 
   summarise(
     n = n(),
     n_year = Year %>% unique() %>% length(),
     n_ind = IndicatorName %>% unique() %>% length()
   ) %>% arrange(n, n_ind)
-
-ind %>% group_by(CountryName) %>% 
-  summarise(
-    n = n(),
-    n_year = Year %>% unique() %>% length(),
-    n_ind = IndicatorName %>% unique() %>% length()
-  ) %>% arrange(CountryName)
 ```
+
 ### What Indicators are in ALL conutries?
 
 ```{r}
@@ -209,9 +186,7 @@ foo <- ind %>% group_by(IndicatorName) %>%
   select(n_count, n, IndicatorName)
 foo
 foo %>% nrow()
-```
-```{r}
-ind %>% group_by(IndicatorName) %>% 
+ind %>% group_by(IndicatorName) %>%
   summarise(
     n_val = Value %>% length()
   ) %>% arrange(-n_val)
@@ -228,3 +203,23 @@ ind %>%
   ggplot(aes(x=Year, y=Value)) +
   geom_point()
 ```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
