@@ -1,0 +1,156 @@
+---
+title: "Project"
+author: "Shawn Riemer"
+date: "11/11/2021"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidyr)
+library(corrplot)
+library(corrr)
+```
+
+## Read in Data
+
+```{r}
+country <- read_csv("data/Country.csv", col_types = cols())
+ind <- read_csv("data/Indicators.csv", col_types = cols())
+```
+
+```{r}
+# Each observation is uniquely identified by CountryName/CountryCode, IndicatorName/IndicatorCode, Year
+# ind %>% str()
+# ind$Year %>% unique()
+
+names <- read_tsv("world-country-names.tsv")
+data_names <- names$name
+ind_names <- ind$CountryName %>% unique()
+overlap_names <- intersect(ind_names, data_names)
+
+ind <- ind %>% 
+  mutate(
+    IndicatorName = str_replace_all(IndicatorName, " ", "_")
+  ) 
+ind <- ind %>% filter(
+    CountryName != "Channel Islands" # remoce bc it has an entire missing year
+  ) %>% filter(
+    CountryName %in% overlap_names
+  )
+```
+
+```{r}
+# pivot wider to add missing values
+ind2 <- ind %>%
+  select(CountryName, IndicatorName, Year, Value) %>%
+  pivot_wider(names_from = IndicatorName,
+              values_from = Value,
+              values_fill = NA)
+
+# foo <- ind2 %>% group_by(CountryName) %>% 
+#   summarise(
+#     n = n()
+#   )
+# foo$n %>% unique()
+
+# foo %>% filter(n != 56)
+```
+
+
+```{r}
+p_missing_ <- function(d) {
+  mvt <- table(is.na(d))
+  mvt[2] / (mvt[1] + mvt[2])
+}
+
+p_missing_(ind2)
+
+# ind$IndicatorCode %>% unique() %>% length()
+# 1344
+```
+
+Number of missing values for each indicator
+```{r}
+max_percent_missing <- 0.2
+
+# Filter to only have indicators that have less than max_percent_missing percent of missing values
+sapply(ind2, function(x) sum(is.na (x))) %>% 
+  as.data.frame() %>% 
+  select(., everything()) %>% 
+  mutate(
+    p_missing = . / 13823
+  ) %>% 
+  arrange(-desc(.)) %>% 
+  filter(p_missing < max_percent_missing)
+
+(foo <- sapply(ind2, function(x) sum(is.na (x))) %>% 
+  as.data.frame() %>% 
+  select(., everything()) %>% 
+  mutate(
+    p_missing = . / 13823
+  ) %>% 
+  arrange(-desc(.)) %>% 
+  filter(p_missing < 0.5))
+         
+filtered_indicators <- foo %>% row.names()
+filtered_indicators <- filtered_indicators[filtered_indicators != "Year"]
+filtered_indicators %>% length()
+```
+
+Number of missing values per country
+```{r}
+total_num_data_ideally <- (ind2 %>% colnames() %>% length() - 2) * 56 # CountryName and Year don't count
+max_percent_missing <- 0.1
+
+# IF JOO
+# total_num_data_ideally <- total_num_data_ideally - (filtered_indicators %>% length()) * 56
+
+(good_countries <- ind2 %>% 
+  group_by(CountryName) %>% 
+  select(-Year) %>% 
+  # select(filtered_indicators) %>%
+  summarise_all(funs(sum(is.na(.)))) %>% 
+  mutate(
+    p_missing = select(., -CountryName) %>% rowSums() / total_num_data_ideally
+  ) %>% select(
+    CountryName,
+    p_missing
+  ) %>% arrange(desc(p_missing)) %>% 
+  filter(p_missing < 0.7))
+
+ind3 <- ind2 %>% 
+  filter(CountryName %in% good_countries$CountryName)
+
+(chosen_indicators_ <- sapply(ind3, function(x) sum(is.na (x))) %>% 
+  as.data.frame() %>% 
+  select(., everything()) %>% 
+  mutate(
+    p_missing = . / 13823
+  ) %>% 
+  arrange(-desc(.)) %>% 
+  filter(p_missing < max_percent_missing))
+chosen_indicators <- chosen_indicators_ %>% row.names()
+
+ind4 <- ind3 %>% 
+  select(CountryName, Year, chosen_indicators)
+
+p_missing_(ind4)
+
+ind4$`GDP_at_market_prices_(current_US$)` %>% is.na() %>% sum() / ind4 %>% nrow() #
+ind4$`GDP_at_market_prices_(constant_2005_US$)` %>% is.na() %>% sum() / ind4 %>% nrow()
+ind4$`GDP_per_capita_(constant_2005_US$)` %>% is.na() %>% sum() / ind4 %>% nrow()
+ind4$`GDP_per_capita_(current_US$)` %>% is.na() %>% sum() / ind4 %>% nrow() # 0.09963284 missing <- good to predict
+ind4$`GDP_growth_(annual_%)` %>% is.na() %>% sum() / ind4 %>% nrow()
+ind4$`GDP_per_capita_growth_(annual_%)` %>% is.na() %>% sum() / ind4 %>% nrow()
+```
+
+We want to have some fraction of countries we remove and some fraction of indicators we remove such that the total number of missing values is low.
+
+
+
+
+
