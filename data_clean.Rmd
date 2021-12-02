@@ -31,6 +31,7 @@ names <- read_tsv("world-country-names.tsv")
 data_names <- names$name
 ind_names <- ind$CountryName %>% unique()
 overlap_names <- intersect(ind_names, data_names)
+overlap_names %>% length()
 
 ind <- ind %>% 
   mutate(
