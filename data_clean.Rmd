@@ -151,6 +151,10 @@ ind4$`GDP_per_capita_growth_(annual_%)` %>% is.na() %>% sum() / ind4 %>% nrow()
 
 We want to have some fraction of countries we remove and some fraction of indicators we remove such that the total number of missing values is low.
 
+```{r}
+ind4
+prcomp(ind4)
+```
 
 
 
