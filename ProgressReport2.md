@@ -74,9 +74,10 @@ ind2 <- ind %>%
 
 Talk about plot
 
+
 <div align="center">
-	<img width="45%" src="https://user-images.githubusercontent.com/44740178/144688837-0e72fdd4-0711-4cd9-a6c6-9761419b3f55.png"></img>
-	<img width="45%" src="https://user-images.githubusercontent.com/44740178/144688856-382016ea-9a55-49d8-89aa-3f72bdd84b55.png"></img>
+	<img width="45%" src="https://user-images.githubusercontent.com/44740178/144689997-715b705e-f077-4c7e-863a-ad44b6129dc9.png"></img>
+	<img width="45%" src="https://user-images.githubusercontent.com/44740178/144690011-505ae1d7-3320-4cf1-b14b-f61fe6d8a263.png"></img>
 </div>
 
 ## Progress & Challenges Faced
