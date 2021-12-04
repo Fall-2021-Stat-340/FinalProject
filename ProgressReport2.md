@@ -72,13 +72,20 @@ ind2 <- ind %>%
 ## Plot
 > At least one plot summarizing some aspect of the data set that is interesting to you and your group. Your plot should be well-labeled, have an appropriate title, and your document should include a reasonably detailed description of what the plot shows as well as any discussion/interpretation of the contents of the plot (e.g., if the plot shows a clear trend in your data, discuss that trend, why it is or isn’t surprising, etc.).
 
-Talk about plot
-
+These are some of the graphics we created from our clustering methods. The first is a hierarchical clustering from which we can choose some natural number of clusters. We chose not to include leaf node labels because it became to cluttered and wasn't helpful, but each leaf node corresponds to a country. The second graph is a pairs plot between some of the indicators we chose (`5` of the `140`) colored by a clustering we did using the first two principal components. We chose just an arbitary 5 indicators because it wasn't possible to visualize all 140, but there seems to be a clear clustering pattern in the shown indicators. The labels are the indicator codes (to fit in the boxes) but a table below maps the indicator codes to their names.
 
 <div align="center">
 	<img width="45%" src="https://user-images.githubusercontent.com/44740178/144689997-715b705e-f077-4c7e-863a-ad44b6129dc9.png"></img>
 	<img width="45%" src="https://user-images.githubusercontent.com/44740178/144690011-505ae1d7-3320-4cf1-b14b-f61fe6d8a263.png"></img>
 </div>
+
+| Code | Name |
+|-|-|
+| SP.ADO.TFRT | Adolescent_fertility_rate_(births_per_1,000_women_ages_15-19) | 
+| SP.POP.DPND | Age_dependency_ratio_(%_of_working-age_population) | 
+| SP.POP.DPND.OL | Age_dependency_ratio_old_(%_of_working-age_population) | 
+| SP.POP.DPND.YG | Age_dependency_ratio_young_(%_of_working-age_population) | 
+| SP.POP.65UP.TO.ZS | Population_ages_65_and_above_(%_of_total) | 
 
 ## Progress & Challenges Faced
 > A brief discussion of the progress and/or challenges faced so far in answering your statistical question(s) of interest. This may include a discussion of the methods and models used; issues that arose when downloading and cleaning the data; shortcomings of the methods/models used so far, etc. 
@@ -94,9 +101,6 @@ There is still missing data in our dataset, so we must use imputation to fill it
 
 ### Statistical Methods
 To answer our first statistical question, we will use the `GDP_per_capita_(current_US$)` column as the measure of economic stability. Every unique year and indicator combination will be a feature used for prediction, with each record being a country. We are still planning to use model fitting to find column’s coefficients and PCA to simplify our model. These methods will tell us the most important indicators.
-
---- maybe remove this whole part?---
-Our second question can be answered by regressing our predictors on each other. We can see if they are correlated with each other or not, and if so, whether or not they all predict our response variable (`GDP_per_capita_(current_US$)`). For that, we can pick out individual predictors and assess how well they predict our response variable and compare those performances to when all predictors are used. This can allow us to eliminate predictors that don't correlate well with our response and are only correlated with other predictors that do predict our response. PCA can also be used here to further simplify our models by finding the most important component directions.
 
 For our first hypothesis, we first fit a linear regression model to predict GDP per capita using all the first five principal components, achieving a multiple R-squared score of 0.7297 and an adjusted R-squared value of 0.7164. We plan to use k-fold cross validation to evaluate our model on unseen data. We also plan to try using regularization (i.e. ridge regression or LASSO) to pick features that best predict our GDP per capita response variable and reduce overfitting. For this part, we are also thinking of using cross validation to choose the optimal alpha value (tuning parameter). Furthermore, we are interested to see if any interaction effects exist between our predictors, and if adding interaction terms will improve our model outcome.
 
