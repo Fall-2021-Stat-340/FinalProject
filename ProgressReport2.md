@@ -1,5 +1,4 @@
-> The names and NetIDs of all group members. 
-
+# STAT 340 Progress Report II
 Names/NetID:
 
 -	Justin Chan: jachan
