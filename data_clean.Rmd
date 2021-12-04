@@ -158,12 +158,9 @@ ind4$CountryName %>% unique() %>% length()
 # ind4 %>% pivot_wider()
 
 ind5 <- ind4 %>% group_by(CountryName) %>% 
-  select(-Year) %>% 
-  # summarise(
-  #   n = n()
-  # )
+  select(-Year) %>%
   summarise_all(
-    mean
+    funs(mean(., na.rm = TRUE))
   )
 ind5
 ```
@@ -197,6 +194,12 @@ foo <- cbind(ind5, pcs) %>% select(
 
 foo$Cluster = km3$cluster
 
+foo %>% 
+  select(
+    contains("GDP"),
+    contains("GNI")
+  )
+
 foo <- foo %>% select(
   CountryName, Cluster, PC1, PC2, everything()
 )
@@ -213,6 +216,19 @@ foo[,5:142] %>% scale() %>% data.frame() %>% dist() %>% hclust() %>% plot(labels
 # foo[,5:142] %>% scale() %>% data.frame() %>% dist() %>% hclust() %>% plot()
 ```
 
+```{r}
+# foo
+# predictors
+y <- gdp_per_capita_current_US
+x <- prcomp(predictors,scale=TRUE, rank. = 5)$x %>% data.frame()
+
+goo <- cbind(y, x) %>% rename(
+  gdp_usd = `GDP_per_capita_(current_US$)`
+)
+
+model <- lm(gdp_usd ~ PC1 + PC2 + PC3 + PC4 + PC5, goo)
+model %>% summary()
+```
 
 
 
