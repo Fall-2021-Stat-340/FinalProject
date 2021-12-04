@@ -79,9 +79,10 @@ Talk about plot
 	<img width="45%" src="https://user-images.githubusercontent.com/44740178/144688856-382016ea-9a55-49d8-89aa-3f72bdd84b55.png"></img>
 </div>
 
-## Challenges Faced
+## Progress & Challenges Faced
 > A brief discussion of the progress and/or challenges faced so far in answering your statistical question(s) of interest. This may include a discussion of the methods and models used; issues that arose when downloading and cleaning the data; shortcomings of the methods/models used so far, etc. 
 
+### Missing Data
 In the last progress report we mentioned that we had to deal with a large amount of missing data. Figuring out how to deal with the missing data ended up being much more of a challenge than we initially anticipated. When the dataset is pivoted wider to include columns for every combination of year and indicator, 68.7% of the data is missing. Additionally, no country was missing less than 50% of its total data. We spent a considerable amount of time trying various ways to whittle our dataset down by country and indicators to minimize the amount of missing data while maximizing the number of countries and indicators that remained.
 
 Our approach to deal with this trade-off between countries, indicators, and missing data was an iterative process. Ultimately what we settled on is described here. We first removed non-official countries (such as Sint Maarten (Dutch part)) which took us from 247 countries to 183. This step was done by looking for overlap with the world-country-names.tsv file. Channel Islands was also removed because it was missing an entire year of data, giving us 182 countries.
@@ -90,11 +91,16 @@ We then looked at columns and removed indicators that were missing at least 50% 
 
 There is still missing data in our dataset, so we must use imputation to fill it in. This was done by taking the median of all data for a particular column. We didn't think it was unreasonable to do this, especially since the median makes sense on all of our indicators. A country's infant mortality rate for a year, for example, if missing, would be filled in with the median of all the years we analyze (1960-2015). We decided against using the mean due to the impact of outliers - if a severe disease outbreak during a certain year increased infant mortality, we don't want that to have a high impact on all the years we have missing data for infant mortality.
 
+### Statistical Methods
 To answer our first statistical question, we will use the `GDP_per_capita_(current_US$)` column as the measure of economic stability. Every unique year and indicator combination will be a feature used for prediction, with each record being a country. We are still planning to use model fitting to find column’s coefficients and PCA to simplify our model. These methods will tell us the most important indicators.
 
+--- maybe remove this whole part?---
 Our second question can be answered by regressing our predictors on each other. We can see if they are correlated with each other or not, and if so, whether or not they all predict our response variable (`GDP_per_capita_(current_US$)`). For that, we can pick out individual predictors and assess how well they predict our response variable and compare those performances to when all predictors are used. This can allow us to eliminate predictors that don't correlate well with our response and are only correlated with other predictors that do predict our response. PCA can also be used here to further simplify our models by finding the most important component directions.
 
-For our third question we hope to do k-means clustering of the other countries using the indicators we found were important in our analysis between the United States and Mexico. 
+For our first hypothesis, we first fit a linear regression model to predict GDP per capita using all available indicators. This has many drawbacks.
+
+
+For our third question, we performed clustering on the major principal components in order to group countries together. There are a couple of approaches we took to accomplish this that may introduce problems later on. First, recall that for every country and every indicator, we have a value for a number of years (1960-2015). Thus, when we clustered on this data set, each data point represented a country-year combination projected onto the first two principal components. It would be difficult to interpret what this cluster structure meant, and our original plan was to cluster based on countries, so we can look at groups of countries, and explain what makes these groups different from one another. Our solution to this was: for every country, we made its value for a specific indicator the average of all indicator values for that country over all the years. Doing this allowed us to cluster based on countries, as we eliminated the "year" dimension, and our data frame now has a row for each country and a column for an indicator. The obvious drawback to this is that we have now lost information in our data related to time (i.e. how a country's manufacturing changed over the years), as we are summmarzing over all years.
 
 ## Next Steps
 > A summary of your next steps (e.g., your goals for the remainder of November, other methods/models you want to try, etc.).
