@@ -41,22 +41,31 @@ Other intriguing indicators include energy use. Numerous different versions of i
 The zip file available for the dataset on Kaggle contains more files than necessary. For our analysis we are working with the Indicators.csv file, which we loaded in and formatted as shown below.
 
 ```{r}
-ind <- read.csv("data/Indicators.csv")
-mex <- ind %>% filter(CountryName == "Mexico")
-mex_ <- mex %>% group_by(IndicatorCode) %>% 
-  summarise(
-    n = n(),
-    CountryName,
-    Year,
-    IndicatorCode,
-    IndicatorName = str_replace_all(IndicatorName, " ", "_"),
-    Value
-  ) %>% filter(n > 50) %>% ungroup()
-mex2 <- mex_ %>% select(CountryName, Year, IndicatorCode, Value) %>%
-pivot_wider(
-  names_from = IndicatorCode,
-  values_from = Value,
-  values_fill = 0
+country <- read_csv("data/Country.csv", col_types = cols())
+ind <- read_csv("data/Indicators.csv", col_types = cols())
+
+names <- read_tsv("world-country-names.tsv")
+data_names <- names$name
+ind_names <- ind$CountryName %>% unique()
+overlap_names <- intersect(ind_names, data_names)
+overlap_names %>% length()
+
+ind <- ind %>% 
+  mutate(
+    IndicatorName = str_replace_all(IndicatorName, " ", "_")
+  ) 
+ind <- ind %>% filter(
+    CountryName != "Channel Islands" # remove bc it has an entire missing year
+  ) %>% filter(
+    CountryName %in% overlap_names
+  )
+
+# pivot wider to add missing values
+ind2 <- ind %>%
+  select(CountryName, IndicatorName, Year, Value) %>%
+  pivot_wider(names_from = IndicatorName,
+              values_from = Value,
+              values_fill = NA)
 )
 ```
 
@@ -66,26 +75,9 @@ pivot_wider(
 Talk about plot
 
 <div align="center">
-	<img width="45%" src="https://user-images.githubusercontent.com/53503018/141596183-3dde91c0-2082-4b25-a088-683a8b701a40.png"></img>
-	<img width="45%" src="https://user-images.githubusercontent.com/53503018/141595932-960c7362-6bfa-4265-875f-dc1a844edcbf.png"></img>
-	<p>US on the left and Mexico on the right</p>
+	<img width="45%" src="https://user-images.githubusercontent.com/44740178/144688837-0e72fdd4-0711-4cd9-a6c6-9761419b3f55.png"></img>
+	<img width="45%" src="https://user-images.githubusercontent.com/44740178/144688856-382016ea-9a55-49d8-89aa-3f72bdd84b55.png"></img>
 </div>
-
-For ease of coding we labeled the plots with `Indicator Code` instead of `Indicator Name`. Here is the mapping from `Indicator Code` to `Indicator Name`:
-
-| Code | Name |
-|-|-|
-| AG.LND.ARBL.HA.PC  |  Arable land (hectares per person) |
-| EN.URB.MCTY  |  Population in urban agglomerations of more than 1 million |
-| NE.IMP.GNFS.ZS  |  Imports of goods and services (% of GDP) |
-| NY.GSR.NFCY.CD  |  Net income from abroad (current US$) |
-| NE.TRD.GNFS.ZS  |  Trade (% of GDP) |
-| SP.POP.TOTL  |  Population, total |
-| TG.VAL.TOTL.GD.ZS  |  Merchandise trade (% of GDP) |
-| NY.TAX.NIND.CN  |  Net taxes on products (current LCU) |
-| EN.POP.DNST  |  Population density (people per sq. km of land area) |
-| FI.RES.TOTL.CD  |  Total reserves (includes gold, current US$) |
-| SP.POP.65UP.TO.ZS  |  Population ages 65 and above (% of total) |
 
 ## Challenges Faced
 > A brief discussion of the progress and/or challenges faced so far in answering your statistical question(s) of interest. This may include a discussion of the methods and models used; issues that arose when downloading and cleaning the data; shortcomings of the methods/models used so far, etc. 
