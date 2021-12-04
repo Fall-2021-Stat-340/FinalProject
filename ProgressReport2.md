@@ -9,7 +9,6 @@ Names/NetID:
 
 
 ## Data Set & Statistical Questions
-> A description of your data set and a summary of your statistical question(s) of interest (you may copy-paste this from your proposal, if you wish). 
 This dataset is a comprehensive collection of indicators of economic development for every country that is collected by the World bank. We think this dataset is good because it is a rich dataset so there would be plenty of interesting patterns to find. Also, the conclusions will be grounded in measures of economic development (i.e. "Adolescent fertility rate negatively correlates with GDP"). Since the dataset is so thorough, we can find both simple and complex patterns (using a wide range of techniques). The specific statistical questions that we are aiming to explore and answer throughout our research are as follows:
 
 1.	What indicators have the greatest impact on economic stability?
@@ -22,13 +21,9 @@ The corresponding hypotheses that we will test are as follows:
 3. 	There is no clear cluster structure present in the dataset that groups countries together.
 
 ## World Bank Dataset
-> A brief description of why your group found this data set in particular to be of interest and why your reader should care. 
-
 There is so much data available in this dataset that has major significance in the real world: data about health, wealth, energy use and more. Obviously these metrics differ significantly between different countries and regions in the world, but we were curious to see if we could uncover the relationships. It is important to understand why the citizens of one country have more wealth than another, or why some countries have restricted internet access. While we cannot expect to completely solve these questions, as so much goes into them, this data can highlight the main driving forces of those inequalities. 
 
 ## Variables
-> A description of the variables available in your data set, with more details for the variables that are likely to be relevant to your question (you may copy-paste this from your proposal, if you wish). 
-
 With over 700 total features there are too many to name them all, but some stand out. Gross Domestic Product (GDP) is a particularly interesting feature, as a country’s economic growth, success, and stability impact so many decisions worldwide. It will be insightful to both predict a country’s GDP based on its other characteristics, such as health outcomes, technological advancement, and more. There are 18 different versions of GDP that we have access to, including GDP per capita, GDP per person employed, and GDP growth (annual %). To simplify our analysis, we will be using just the GDP per capita in US$, (code: NY.GDP.PCAP.CD).
 
 There are many metrics that we will explore. For example, Health is one category of features that we will look at. Some of them include Age dependency ratio (% of working-age population), Adolescent fertility rate (births per 1,000 women ages 15-19), and Birth rate, crude (per 1,000 people). These columns will be analyzed to determine their effect on economic stability.
@@ -36,8 +31,6 @@ There are many metrics that we will explore. For example, Health is one category
 Other intriguing indicators include energy use. Numerous different versions of it are included, among them Fossil fuel energy consumption, Energy use per capita, and CO2 emissions (metric tons per capita). As electricity consumption rises across the globe, we can investigate how different countries are managing those changes and see if energy use correlates with other important indicators. All of the mentioned features will be useful in identifying patterns and clusters when it comes to a country’s health and prosperity.
 
 ## Loading Dataset
-> A block of code showing how to load the data into R (if your data set is too large to permit this, please speak to us promptly). 
-
 The zip file available for the dataset on Kaggle contains more files than necessary. For our analysis we are working with the Indicators.csv file, which we loaded in and formatted as shown below.
 
 ```{r}
@@ -70,7 +63,6 @@ ind2 <- ind %>%
 ```
 
 ## Plot
-> At least one plot summarizing some aspect of the data set that is interesting to you and your group. Your plot should be well-labeled, have an appropriate title, and your document should include a reasonably detailed description of what the plot shows as well as any discussion/interpretation of the contents of the plot (e.g., if the plot shows a clear trend in your data, discuss that trend, why it is or isn’t surprising, etc.).
 
 These are some of the graphics we created from our clustering methods. The first is a hierarchical clustering from which we can choose some natural number of clusters. We chose not to include leaf node labels because it became to cluttered and wasn't helpful, but each leaf node corresponds to a country. The second graph is a pairs plot between some of the indicators we chose (5 of the 140) colored by a clustering we did using the first two principal components. We chose just an arbitary 5 indicators because it wasn't possible to visualize all 140, but there seems to be a clear clustering pattern in the shown indicators. The labels are the indicator codes (to fit in the boxes) but a table below maps the indicator codes to their names.
 
@@ -88,7 +80,6 @@ These are some of the graphics we created from our clustering methods. The first
 | SP.POP.65UP.TO.ZS | Population_ages_65_and_above_(%_of_total) | 
 
 ## Progress & Challenges Faced
-> A brief discussion of the progress and/or challenges faced so far in answering your statistical question(s) of interest. This may include a discussion of the methods and models used; issues that arose when downloading and cleaning the data; shortcomings of the methods/models used so far, etc. 
 
 ### Missing Data
 
@@ -111,9 +102,6 @@ For our third hypothesis, we performed clustering on the major principal compone
 Our second challenge was deciding how many cluster centers to use for k-means. We arbitrarily picked 3, but realize that there is a more systematic/algorithmic way of doing this. We are currently trying to use hierarchical clustering so we can more easily identify the most natural number of clusters that exist in our data.
 
 ## Next Steps
-> A summary of your next steps (e.g., your goals for the remainder of November, other methods/models you want to try, etc.).
-
-
 These are the goals we would like to achieve by the listed dates in December.
 
 - 12/10: Finish implementing, evaluating, and interpreting the results of our model (interaction terms, regularization, cross-valudidation), allowing us to test hypothesis 1. To answer hypothesis 2, we will filter our correlation matrix on our chosen indicators. Lastly, we will perform clustering for each year, instead of a summary of all years. We will aim to create clustering graphics to answer hypothesis 3.
