@@ -152,9 +152,84 @@ ind4$`GDP_per_capita_growth_(annual_%)` %>% is.na() %>% sum() / ind4 %>% nrow()
 We want to have some fraction of countries we remove and some fraction of indicators we remove such that the total number of missing values is low.
 
 ```{r}
-ind4
-prcomp(ind4)
+ind4$CountryName %>% unique() %>% length()
+# prcomp(ind4)
+
+# ind4 %>% pivot_wider()
+
+ind5 <- ind4 %>% group_by(CountryName) %>% 
+  select(-Year) %>% 
+  # summarise(
+  #   n = n()
+  # )
+  summarise_all(
+    mean
+  )
+ind5
 ```
+
+
+```{r}
+for (i in 2:ncol(ind5)) {
+  ind5[is.na(ind5[,i]), i] <- lapply(ind5[,i], mean, na.rm=TRUE)
+}
+```
+
+```{r}
+ind5
+
+gdp_per_capita_current_US <- ind5 %>%
+  select("GDP_per_capita_(current_US$)")
+predictors <- ind5 %>%
+  select(-"GDP_per_capita_(current_US$)",
+         -"CountryName") 
+
+pc3 <- prcomp(predictors,scale=TRUE, rank. = 2)
+km3 <- kmeans(pc3$x,centers=5, nstart=10)
+
+pcs <- pc3$x %>% data.frame()
+
+km3$cluster %>% length()
+
+foo <- cbind(ind5, pcs) %>% select(
+  CountryName, PC1, PC2, everything()
+)
+
+foo$Cluster = km3$cluster
+
+foo <- foo %>% select(
+  CountryName, Cluster, PC1, PC2, everything()
+)
+
+pairs(foo[,5:9], col=foo$Cluster)
+
+foo[,5:142] %>% scale() %>% data.frame()
+
+# foo[,5:142] %>% dist() %>% hclust() %>% plot(labels=FALSE)
+
+foo
+
+foo[,5:142] %>% scale() %>% data.frame() %>% dist() %>% hclust() %>% plot(labels=FALSE)
+# foo[,5:142] %>% scale() %>% data.frame() %>% dist() %>% hclust() %>% plot()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

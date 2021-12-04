@@ -144,22 +144,46 @@ head(ind4, 10)
 ```{r}
 gdp_per_capita_current_US <- ind4 %>%
   select("GDP_per_capita_(current_US$)")
-head(gdp_per_capita_current_US, 10)
+# head(gdp_per_capita_current_US, 10)
 predictors <- ind4 %>%
   select(-"GDP_per_capita_(current_US$)",
          -"CountryName") 
-head(predictors, 10)
-```
-```{r}
-km1 <- kmeans(prcomp(predictors,scale=TRUE)$x,centers=2,nstart=10)
-km1
+# head(predictors, 10)
+
+# pc1 <- prcomp(predictors,scale=TRUE, rank. = 10)
+# km1 <- kmeans(pc1$x,centers=5,nstart=10)
+# km1
+
+# pc2 <- prcomp(predictors,scale=TRUE, rank. = 2)
+# pc2 %>% biplot()
+pc3 <- prcomp(predictors,scale=TRUE, rank. = 2)
+km3 <- kmeans(pc1$x,centers=5, nstart=10)
+
+pcs <- pc3$x %>% data.frame()
+
+# ind4 %>% mutate(
+#   PC1 = pcs[1],
+#   PC2 = pcs[2]
+# ) %>% select(CountryName, PC1, PC2, everything())
+
+# full_join(ind4, pcs)
+cbind(ind4, pcs) %>% select(
+  CountryName, PC1, PC2, everything()
+)
 ```
 
 ```{r}
-km2 <- kmeans(prcomp(predictors,scale=TRUE)$x[,1:2],centers=2,nstart=10)
-km2
+# km2 <- kmeans(prcomp(predictors,scale=TRUE)$x[,1:2],centers=2,nstart=10)
+# km2
 ```
 
+```{r}
+# library(rnaturalearth)
+# library(sp)
+# 
+# #world countries
+# sp::plot(ne_countries())
+```
 
 
 
