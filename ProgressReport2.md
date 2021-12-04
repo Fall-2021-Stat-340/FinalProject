@@ -111,8 +111,7 @@ Our second challenge was deciding how many cluster centers to use for k-means. W
 
 These are the goals we would like to achieve by the listed dates in December.
 
-- 12/10: Finish implementing, evaluating, and interpreting the results of our model (interaction terms, regularization, cross-valudidation), allowing us to test hypothesis 1. Perform clustering for each year, instead of a summary of all years.
-
+- 12/10: Finish implementing, evaluating, and interpreting the results of our model (interaction terms, regularization, cross-valudidation), allowing us to test hypothesis 1. To answer hypothesis 2, we will filter our correlation matrix on our chosen indicators. Lastly, we will perform clustering for each year, instead of a summary of all years. We will aim to create clustering graphics to answer hypothesis 3.
 
 - 12/17: Finalize report and presentation, rehearse, and make last-minute changes.
 
