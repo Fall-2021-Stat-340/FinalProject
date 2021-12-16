@@ -9,8 +9,8 @@ Names/NetID:
 
 
 ## Abstract
-An abstract of at most 300 words giving an overview of your data, the question(s) you tried to
-answer, and a brief summary of your findings.
+*An abstract of at most 300 words giving an overview of your data, the question(s) you tried to
+answer, and a brief summary of your findings.*
 
 
 ## Dataset
@@ -23,11 +23,48 @@ Our analysis used the World Development Indicators dataset. We accessed the data
 
 The data was compiled by the World Bank, an international financial organization that provides support for lower-income countries. They track the indicators found in this dataset and compile them for anayone to use. Our group was drawn to this dataset because of its importance and relevance. The indicators included comprise some of the most discussed and debated inequalities between countries. While we cannot solve these inequalities just by looking at data, we are excited to investigate and identify prominent relationships between features.
 
+The dataset was read in and formatted as shown below.
+
+```{r}
+country <- read_csv("data/Country.csv", col_types = cols())
+ind <- read_csv("data/Indicators.csv", col_types = cols())
+
+names <- read_tsv("world-country-names.tsv")
+data_names <- names$name
+ind_names <- ind$CountryName %>% unique()
+overlap_names <- intersect(ind_names, data_names)
+overlap_names %>% length()
+
+ind <- ind %>% 
+  mutate(
+    IndicatorName = str_replace_all(IndicatorName, " ", "_")
+  ) 
+ind <- ind %>% filter(
+    CountryName != "Channel Islands" # remove because it has an entire missing year
+  ) %>% filter(
+    CountryName %in% overlap_names
+  )
+
+# pivot wider to add missing values
+ind2 <- ind %>%
+  select(CountryName, IndicatorName, Year, Value) %>%
+  pivot_wider(names_from = IndicatorName,
+              values_from = Value,
+              values_fill = NA)
+)
+```
+
 
 ## Variables
-A description of the variables available in your data set, with more details for the variables that are
+*A description of the variables available in your data set, with more details for the variables that are
 likely to be relevant to your question (you may copy-paste this from your previous drafts, if you
-wish).
+wish).*
+
+With 1,344 total unique indicators there are too many to name them all, but we will focus on a handful of them. For our economic analysis, we will use `GDP_per_capita_(current_US$)`, which is a country's economic output per citizen adjusted to the United States Dollar currency. There are many variations of GDP in the dataset, but GDP per capita is commonly used to compare the economic states of different countries, so we will use that one. A couple of variables that we expect impact a country's economic strenght are unemployment rate, `Unemployment,_total_(%_of_total_labor_force)`, and relative military expenditure, `Military_expenditure_(%_of_GDP)`. 
+
+Of the health indicators, one variable we will look at is `Adolescent_fertility_rate_(births_per_1,000_women_ages_15-19)`. Adolescent fertility rate is the rate of births per 1,000 women aged 15-19 years old, and is often used as a healthcare metric, so we expect it to be related to GDP per capita. Another indicator that we expect to impact GDP per capita is `Population_ages_65_and_above_(%_of_total)`, the percent percent of citizens 65 years or older. Other metrics related to health that we expect to find important include those related to health expenditure, `Health_expenditure,_total_(%_of_GDP)`, and life expectancy, `Life_expectancy_at_birth,_total_(years)`.
+
+Many other assorted metrics are included in the dataset. Environmental metrics such as CO2 emmisions, `CO2_emissions_(metric_tons_per_capita)`, will be interesting to investigate against economic metrics. Other indicators we expect to correlate with economic strength are internet users, `Internet_users_(per_100_people)`, and urban populatoin, `Urban_population_(%_of_total)`, although plenty of indicators not mentioned here will also be analyzed.
 
 
 ## Statistical Questions
