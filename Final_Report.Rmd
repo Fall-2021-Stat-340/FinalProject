@@ -95,15 +95,25 @@ good_countries <- ind2 %>%
 ind3 <- ind2 %>%
   filter(CountryName %in% good_countries$CountryName)
 
+my_row_names <- sapply(ind3, function(x)
+  sum(is.na (x))) %>%
+  as.data.frame() %>%
+  select(., everything()) %>% 
+  row.names()
+
 chosen_indicators_ <- sapply(ind3, function(x)
   sum(is.na (x))) %>%
   as.data.frame() %>%
   select(., everything()) %>%
-  mutate(p_missing = . / 13823) %>%
+  mutate(names = my_row_names) %>% 
+  mutate(p_missing = . / 13823) %>% # removes rownames on oat
   arrange(-desc(.)) %>%
   filter(p_missing < max_percent_missing)
-chosen_indicators <- chosen_indicators_ %>% row.names()
+chosen_indicators <- chosen_indicators_$names
+```
 
+
+```{r message=FALSE, warning=FALSE}
 ind4 <- ind3 %>%
   select(CountryName, Year, all_of(chosen_indicators))
 
