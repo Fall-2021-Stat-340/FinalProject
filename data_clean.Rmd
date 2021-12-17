@@ -27,11 +27,11 @@ ind <- read_csv("data/Indicators.csv", col_types = cols())
 # ind %>% str()
 # ind$Year %>% unique()
 
-names <- read_tsv("world-country-names.tsv")
+names <- read_tsv("world-country-names.tsv", col_types = cols())
 data_names <- names$name
 ind_names <- ind$CountryName %>% unique()
 overlap_names <- intersect(ind_names, data_names)
-overlap_names %>% length()
+# overlap_names %>% length()
 
 ind <- ind %>% 
   mutate(
@@ -171,6 +171,19 @@ for (i in 2:ncol(ind5)) {
   ind5[is.na(ind5[,i]), i] <- lapply(ind5[,i], mean, na.rm=TRUE)
 }
 ```
+
+```{r}
+code_to_name <- function(code) {
+  uh <- ind %>% select(IndicatorName, IndicatorCode) %>% filter(IndicatorCode == code) %>% unique()
+  uh$IndicatorName
+}
+
+name_to_code <- function(name) {
+  uh <- ind %>% select(IndicatorName, IndicatorCode) %>% filter(IndicatorName == name) %>% unique()
+  uh$IndicatorCode
+}
+```
+
 
 ```{r}
 ind5
