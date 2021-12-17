@@ -101,3 +101,8 @@ The first step of our analysis was refining our dataset to get it into a form wh
 > A brief summary of your findings and potential future research questions
 
 *Paragraph summarizing our findings*
+
+## Appendix
+
+### Data Cleaning
+
