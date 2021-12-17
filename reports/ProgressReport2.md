@@ -12,13 +12,9 @@ Names/NetID:
 This dataset is a comprehensive collection of indicators of economic development for every country that is collected by the World bank. We think this dataset is good because it is a rich dataset so there would be plenty of interesting patterns to find. Also, the conclusions will be grounded in measures of economic development (i.e. "Adolescent fertility rate negatively correlates with GDP"). Since the dataset is so thorough, we can find both simple and complex patterns (using a wide range of techniques). The specific statistical questions that we are aiming to explore and answer throughout our research are as follows:
 
 1.	What indicators have the greatest impact on economic stability?
-2.	How do those indicators relate to each other?
-3.	How do those relationships differ between countries, and is there a cluster structure present? (i.e. developed countries and developing countries)
 
 The corresponding hypotheses that we will test are as follows:
 1. 	Indicators in the World Bank dataset have no relationship to GDP per capita.
-2. 	Indicators in the World Bank dataset do not correlate with each other. 
-3. 	There is no clear cluster structure present in the dataset that groups countries together.
 
 ## World Bank Dataset
 There is so much data available in this dataset that has major significance in the real world: data about health, wealth, energy use and more. Obviously these metrics differ significantly between different countries and regions in the world, but we were curious to see if we could uncover the relationships. It is important to understand why the citizens of one country have more wealth than another, or why some countries have restricted internet access. While we cannot expect to completely solve these questions, as so much goes into them, this data can highlight the main driving forces of those inequalities. 
