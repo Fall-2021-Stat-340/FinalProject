@@ -206,7 +206,7 @@ The first step of our analysis was refining our dataset to get it into a form wh
 
 ### Doing PCA and kmeans
 
-```{r pca_and_kmeans}
+```{r pca_and_kmeans, class.source = 'fold-show'}
 # At this point the data frame we want to use is called `ind5`. Doing PCA and kmeans clustering.
 gdp_per_capita_current_US <- ind5 %>%
   select("GDP_per_capita_(current_US$)")
@@ -283,7 +283,7 @@ One challenge we faced was cleaning our data. The data was provided by The World
 
 Take for example this code snippet. We look at our original data and find that given that each observation was uniquely identified by a `Country`, `Indicator`, `Year` combination, we have `68.68254` percent of our data is missing values. We didn't notice this at first because the missing data was implicit in the original dataset, there simply wouldn't be a `Country`, `Indicator`, `Year` combination if that value didn't exist for some year or country.
 
-```{r}
+```{r class.source = 'fold-show'}
 # Calculating proportion of missing values:
 p_missing_ <- function(d) {
   mvt <- table(is.na(d))
@@ -321,7 +321,7 @@ tibble(
 
 No country had less than 50% of missing values.
 
-```{r}
+```{r warning=FALSE}
 n_year <- ind2$Year %>% unique() %>% length()
 n_ind <- (ind2 %>% ncol() - 2) # CountryName and Year don't count
 n_d <- n_ind * n_year 
