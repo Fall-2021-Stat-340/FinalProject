@@ -27,7 +27,6 @@ country <- read_csv("data/Country.csv", col_types = cols())
 ind <- read_csv("data/Indicators.csv", col_types = cols())
 
 # Each observation is uniquely identified by CountryName/CountryCode, IndicatorName/IndicatorCode, Year
-
 names <- read_tsv("world-country-names.tsv", col_types = cols())
 data_names <- names$name
 ind_names <- ind$CountryName %>% unique()
@@ -45,6 +44,9 @@ ind2 <- ind %>%
   pivot_wider(names_from = IndicatorName,
               values_from = Value,
               values_fill = NA)
+
+# save value for use in appendix
+ind2_orig <- ind2
 
 # Calculating proportion of missing values:
 
@@ -163,7 +165,7 @@ description of why your group found this data interesting and why your reader sh
 obtained your data set from Kaggle or a similar repository, it is not enough to simply say “This was
 collected by user xyz and posted to Kaggle”. You should be able to explain the specific source of your data.
 
-Our analysis used the World Development Indicators dataset. We accessed the dataset from Kaggle where it was published directly by Kaggle. It includes two files. The first is Country.csv, which includes a row for each of the 247 countries present in the dataset, along with the country's name, code, currency, and region. The second file, Indicators.csv, contains a comprehensive list of over 1,300 indicators related to economic development, health, and more. Some of these indicators include GDP per capita, unemployment rate, adolescent fertility rate, and urban population. Indicators for years between 1960 and 2015 are present, although not every combination of country, indicator, and year is available. More than 70% of the total data is missing, so careful consideration will be taken when choosing what countries, indicators, and years to analyze.
+Our analysis used the World Development Indicators dataset ([link](https://www.kaggle.com/kaggle/world-development-indicators)). We accessed the dataset from Kaggle which included a cleaned version of the raw data from The World Bank ([link](https://datacatalog.worldbank.org/search/dataset/0037712)). It includes two files. The first is Country.csv, which includes a row for each of the 247 countries present in the dataset, along with the country's name, code, currency, and region. The second file, Indicators.csv, contains a comprehensive list of over 1,300 indicators related to economic development, health, and more. Some of these indicators include GDP per capita, unemployment rate, adolescent fertility rate, and urban population. Indicators for years between 1960 and 2015 are present, although not every combination of country, indicator, and year is available. More than 70% of the total data is missing, so careful consideration will be taken when choosing what countries, indicators, and years to analyze.
 
 The data was compiled by the World Bank, an international financial organization that provides support for lower-income countries. They track the indicators found in this dataset and compile them for anayone to use. Our group was drawn to this dataset because of its importance and relevance. The indicators included comprise some of the most discussed and debated inequalities between countries. While we cannot solve these inequalities just by looking at data, we are excited to investigate and identify prominent relationships between features.
 
@@ -275,6 +277,85 @@ model %>% summary()
 
 ## Data Cleaning
 
+### The problem
+
+One challenge we faced was cleaning our data. The data was provided by The World Bank, which aggregated this data from multiple sources such as global studies or national surveys. Due to the nature of how our data was collected, there were many missing values in our dataset. We assume this is because national surveys are not standardized across countries and time, and most of the data sources didn't exist for the entirety of the time range of 1960 to 2015.
+
+Take for example this code snippet. We look at our original data and find that given that each observation was uniquely identified by a `Country`, `Indicator`, `Year` combination, we have `68.68254` percent of our data is missing values. We didn't notice this at first because the missing data was implicit in the original dataset, there simply wouldn't be a `Country`, `Indicator`, `Year` combination if that value didn't exist for some year or country.
+
+```{r}
+# Calculating proportion of missing values:
+p_missing_ <- function(d) {
+  mvt <- table(is.na(d))
+  mvt[2] / (mvt[1] + mvt[2])
+}
+
+ind2 <- ind2_orig
+tibble(proportion_missing_values = p_missing_(ind2))
+```
+
+In addition, almost all the indicators had this issue. Of the 1344 indicators, only 29 had less than 10% missing values and only 652 had less than 50% missing values.
+
+```{r}
+max_percent_missing <- 0.1
+n_ind_lt_10 <- sapply(ind2, function(x) sum(is.na (x))) %>% 
+  as.data.frame() %>% 
+  select(., everything()) %>% 
+  arrange(-desc(.)) %>% 
+  filter(. / 13823 < max_percent_missing) %>% nrow()
+
+ind2 <- ind2_orig
+max_percent_missing <- 0.5
+n_ind_lt_50 <- sapply(ind2, function(x) sum(is.na (x))) %>% 
+  as.data.frame() %>% 
+  select(., everything()) %>% 
+  arrange(-desc(.)) %>% 
+  filter(. / 13823 < max_percent_missing) %>% nrow()
+
+tibble(
+  max_percent_missing = c(10, 50),
+  num_indicators = c(n_ind_lt_10, n_ind_lt_50),
+  proportion_of_indicators = c(n_ind_lt_10 / ind2 %>% nrow() * 10, n_ind_lt_50 / ind2 %>% nrow() * 10),
+)
+```
+
+No country had less than 50% of missing values.
+
+```{r}
+n_year <- ind2$Year %>% unique() %>% length()
+n_ind <- (ind2 %>% ncol() - 2) # CountryName and Year don't count
+n_d <- n_ind * n_year 
+
+ind2 <- ind2_orig
+
+obs_counts <- ind %>%
+  group_by(CountryName) %>% 
+  summarise(
+    n = n()
+  )
+
+ind2 %>% 
+  group_by(CountryName) %>% 
+  select(-Year) %>% 
+  summarise_all(funs(sum(is.na(.)))) %>% 
+  mutate(
+    p_missing = select(., -CountryName) %>% rowSums() / n_d
+  ) %>% select(
+    CountryName,
+    p_missing
+  ) %>% 
+  full_join(obs_counts) %>%
+  arrange(-desc(p_missing))
+```
+
+### The solution
+
+Our goal was to reduce the proportion of our data that was missing values while still keeping a significant number of observations. Recall that each observation was uniquely identified by a `Country`, `Indicator`, `Year` combination. Because of this, we decided to remove a combination of countries and indicators that would remove the most missing values.
+
+We had decided not to remove Years because we wanted to maintain that temporal data and thought there might be interesting insights based on time. We ended up not going down this route. Therefore, if we had more time we would also remove some range of Years if it would help us maintain more indicators or countries as a result.
+
+Also in this step we filtered our countries to only be those included in another external list of country names because there were a few territories included in this list
+
 ```{r read_data, message=FALSE, warning=FALSE, eval=FALSE}
 country <- read_csv("data/Country.csv", col_types = cols())
 ind <- read_csv("data/Indicators.csv", col_types = cols())
@@ -299,15 +380,7 @@ ind2 <- ind %>%
               values_from = Value,
               values_fill = NA)
 
-# Calculating proportion of missing values:
-
-p_missing_ <- function(d) {
-  mvt <- table(is.na(d))
-  mvt[2] / (mvt[1] + mvt[2])
-}
-
 # Number of missing values for each indicator
-
 max_percent_missing <- 0.2
 
 # Filter to only have indicators that have less than max_percent_missing percent of missing values
@@ -337,7 +410,6 @@ filtered_indicators <-
 # 651
 
 # Number of missing values per country
-
 total_num_data_ideally <-
   (ind2 %>% colnames() %>% length() - 2) * 56 # CountryName and Year don't count
 max_percent_missing <- 0.1
@@ -386,11 +458,16 @@ for (i in 2:ncol(ind5)) {
 }
 ```
 
+The following table summarizes the results of our data cleaning (excluding imputation). We were able to reduce the number of missing values but still keep a significant amount of observations. We went from `68.68254` percent of the data being missing values to only `10.68711` percent, while still maintaining `5992` (`r 5992 / 10192 * 100` percent) of the observations.
+
+While we deemed this satisfactory and moved on with our analysis, we know it probably wasn't the optimal choice of countries and indicators dropped. We did a bunch of testing and ended up first dropping all indicators with more than 20% missing values and then countries with more than 10% missing values. The optimal solution would probably to have alternated between dropping indicators and countries by dropping the indicator or country that contained the most missing values and alternating until some threshold of missing values or number of observations were met. Also, as mentioned before, we could have considered dropping some years as well. Ideally, given more time, we would have implemented this.
+
 ```{r p_missing}
 # After all that, we have a new dataset that has much less missing values.
 tibble(
-  p_missing_before = p_missing_(ind2),
-  p_missing_after = p_missing_(ind4)
+  label = c("Before", "After"),
+  p_missing = c(p_missing_(ind2), p_missing_(ind4)),
+  n_obs = c(ind2 %>% nrow(), ind4 %>% nrow())
 )
 ```
 
