@@ -162,33 +162,43 @@ head(ind5, 5)
 
 ```{r}
 head(ind5, 5)
-# eliminate variants of GDP
-ind5_clean <- ind5[,-c(51,52,61,66,67,68,71,72,73,74,80,81,82)]
-dim(ind5_clean)
 ```
 ```{r}
 library(MASS);
-lambdas = c(1,2,5,10,20,30,50,100,200,500)
-ridge_models<-lm.ridge(`GDP_per_capita_(current_US$)`~.,ind5_clean,lambda = lambdas)
+lambdas = c(0,1,2,5);
+ridge_models<-lm.ridge(`GDP per capita (current US$)`~.,ind5,lambda = lambdas)
 plot(ridge_models)
 ```
+
+
 ```{r}
-coef(ridge_models)
+lm_sanity_check <- lm(`GDP per capita (current US$)`~., ind5)
+lm_sanity_check$coefficients[1:3]
+```
+```{r}
+head(coef(ridge_models), 1)[1:3]
+```
+```{r}
+ind5[1,60]
+```
+
+
+```{r}
+ind5_predictors <- cbind(const=1,ind5[,-c(60)])
+beta_mx <- coef(ridge_models)
+mx <- as.matrix(ind5_predictors)
+obs_by_lambda_predictions <- as.matrix(mx) %*% t(beta_mx)
+obs_by_lambda_predictions[1:10]
 ```
 
 ```{r}
-ind5_predictors <- cbind(const=1,ind5_clean[,-c(59)])
-beta_matrix <- coef(ridge_models)
-mx <- as.matrix( ind5_predictors )
-#cat(dim(mx))
-cat(dim(beta_matrix))
+errors <- ind5$`GDP per capita (current US$)` - obs_by_lambda_predictions
+dim(errors)
 ```
 ```{r}
-obs_by_lambda-predictions <- as.matrix()
+RSS_by_model <- apply(errors^2, 2, FUN=mean)
+RSS_by_model
 ```
-
-
-
 
 
 
