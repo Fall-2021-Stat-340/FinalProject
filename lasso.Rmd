@@ -1,0 +1,201 @@
+---
+title: "Project"
+author: "Shawn Riemer"
+date: "12/16/2021"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidyr)
+library(corrplot)
+library(corrr)
+```
+
+## Read in Data
+
+```{r}
+country <- read_csv("data/Country.csv", col_types = cols())
+ind <- read_csv("data/Indicators.csv", col_types = cols())
+```
+
+```{r}
+# Each observation is uniquely identified by CountryName/CountryCode, IndicatorName/IndicatorCode, Year
+# ind %>% str()
+# ind$Year %>% unique()
+names <- read_tsv("world-country-names.tsv")
+data_names <- names$name
+ind_names <- ind$CountryName %>% unique()
+overlap_names <- intersect(ind_names, data_names)
+overlap_names %>% length()
+ind <- ind %>% 
+  mutate(
+    IndicatorName = str_replace_all(IndicatorName, " ", "_")
+  ) 
+ind <- ind %>% filter(
+    CountryName != "Channel Islands" # remoce bc it has an entire missing year
+  ) %>% filter(
+    CountryName %in% overlap_names
+  )
+```
+
+```{r}
+# pivot wider to add missing values
+ind2 <- ind %>%
+  select(CountryName, IndicatorName, Year, Value) %>%
+  pivot_wider(names_from = IndicatorName,
+              values_from = Value,
+              values_fill = NA)
+# foo <- ind2 %>% group_by(CountryName) %>% 
+#   summarise(
+#     n = n()
+#   )
+# foo$n %>% unique()
+# foo %>% filter(n != 56)
+```
+
+
+```{r}
+p_missing_ <- function(d) {
+  mvt <- table(is.na(d))
+  mvt[2] / (mvt[1] + mvt[2])
+}
+p_missing_(ind2)
+# ind$IndicatorCode %>% unique() %>% length()
+# 1344
+```
+
+Number of missing values for each indicator
+```{r}
+max_percent_missing <- 0.2
+# Filter to only have indicators that have less than max_percent_missing percent of missing values
+sapply(ind2, function(x) sum(is.na (x))) %>% 
+  as.data.frame() %>% 
+  select(., everything()) %>% 
+  mutate(
+    p_missing = . / 13823
+  ) %>% 
+  arrange(-desc(.)) %>% 
+  filter(p_missing < max_percent_missing)
+(foo <- sapply(ind2, function(x) sum(is.na (x))) %>% 
+  as.data.frame() %>% 
+  select(., everything()) %>% 
+  mutate(
+    p_missing = . / 13823
+  ) %>% 
+  arrange(-desc(.)) %>% 
+  filter(p_missing < 0.5))
+         
+filtered_indicators <- foo %>% row.names()
+filtered_indicators <- filtered_indicators[filtered_indicators != "Year"]
+filtered_indicators %>% length()
+```
+
+Number of missing values per country
+```{r}
+total_num_data_ideally <- (ind2 %>% colnames() %>% length() - 2) * 56 # CountryName and Year don't count
+max_percent_missing <- 0.1
+# IF JOO
+# total_num_data_ideally <- total_num_data_ideally - (filtered_indicators %>% length()) * 56
+(good_countries <- ind2 %>% 
+  group_by(CountryName) %>% 
+  select(-Year) %>% 
+  # select(filtered_indicators) %>%
+  summarise_all(funs(sum(is.na(.)))) %>% 
+  mutate(
+    p_missing = select(., -CountryName) %>% rowSums() / total_num_data_ideally
+  ) %>% select(
+    CountryName,
+    p_missing
+  ) %>% arrange(desc(p_missing)) %>% 
+  filter(p_missing < 0.7))
+ind3 <- ind2 %>% 
+  filter(CountryName %in% good_countries$CountryName)
+(chosen_indicators_ <- sapply(ind3, function(x) sum(is.na (x))) %>% 
+  as.data.frame() %>% 
+  select(., everything()) %>% 
+  mutate(
+    p_missing = . / 13823
+  ) %>% 
+  arrange(-desc(.)) %>% 
+  filter(p_missing < max_percent_missing))
+chosen_indicators <- chosen_indicators_ %>% row.names()
+ind4 <- ind3 %>% 
+  select(CountryName, Year, chosen_indicators)
+p_missing_(ind4)
+ind4$`GDP_at_market_prices_(current_US$)` %>% is.na() %>% sum() / ind4 %>% nrow() #
+ind4$`GDP_at_market_prices_(constant_2005_US$)` %>% is.na() %>% sum() / ind4 %>% nrow()
+ind4$`GDP_per_capita_(constant_2005_US$)` %>% is.na() %>% sum() / ind4 %>% nrow()
+ind4$`GDP_per_capita_(current_US$)` %>% is.na() %>% sum() / ind4 %>% nrow() # 0.09963284 missing <- good to predict
+ind4$`GDP_growth_(annual_%)` %>% is.na() %>% sum() / ind4 %>% nrow()
+ind4$`GDP_per_capita_growth_(annual_%)` %>% is.na() %>% sum() / ind4 %>% nrow()
+```
+
+We want to have some fraction of countries we remove and some fraction of indicators we remove such that the total number of missing values is low.
+
+```{r}
+ind4$CountryName %>% unique() %>% length()
+# prcomp(ind4)
+# ind4 %>% pivot_wider()
+ind5 <- ind4 %>% group_by(CountryName) %>% 
+  select(-Year) %>%
+  summarise_all(
+    funs(mean(., na.rm = TRUE))
+  )
+ind5
+```
+
+
+```{r}
+for (i in 2:ncol(ind5)) {
+  ind5[is.na(ind5[,i]), i] <- lapply(ind5[,i], mean, na.rm=TRUE)
+}
+```
+```{r}
+ind5 <- column_to_rownames(remove_rownames(ind5), var="CountryName")
+head(ind5, 5)
+```
+
+
+```{r}
+head(ind5, 5)
+# eliminate variants of GDP
+ind5_clean <- ind5[,-c(51,52,61,66,67,68,71,72,73,74,80,81,82)]
+dim(ind5_clean)
+```
+```{r}
+library(MASS);
+lambdas = c(1,2,5,10,20,30,50,100,200,500)
+ridge_models<-lm.ridge(`GDP_per_capita_(current_US$)`~.,ind5_clean,lambda = lambdas)
+plot(ridge_models)
+```
+```{r}
+coef(ridge_models)
+```
+
+```{r}
+ind5_predictors <- cbind(const=1,ind5_clean[,-c(59)])
+beta_matrix <- coef(ridge_models)
+mx <- as.matrix( ind5_predictors )
+#cat(dim(mx))
+cat(dim(beta_matrix))
+```
+```{r}
+obs_by_lambda-predictions <- as.matrix()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
