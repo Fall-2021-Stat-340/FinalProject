@@ -170,13 +170,13 @@ head(ind5, 5)
 ```{r}
 library(MASS);
 lambdas <- c(0,1,2,5,10,20,50,100,200,500)
-ridge_models<-lm.ridge(`GDP per capita (current US$)`~.,ind5,lambda = lambdas)
+# ridge_models<-lm.ridge(`GDP per capita (current US$)`~.,ind5,lambda = lambdas)
 plot(ridge_models)
 ```
 
 
 ```{r}
-lm_sanity_check <- lm(`GDP per capita (current US$)`~., ind5)
+# lm_sanity_check <- lm(`GDP per capita (current US$)`~., ind5)
 lm_sanity_check$coefficients[1:3]
 ```
 ```{r}
@@ -203,6 +203,82 @@ dim(errors)
 RSS_by_model <- apply(errors^2, 2, FUN=mean)
 RSS_by_model
 ```
+
+```{r}
+library(tidyverse)
+predictors <- ind5 %>%
+  select(-`GDP_per_capita_(current_US$)`)
+# ind5$`GDP_per_capita_(current_US$)`
+```
+
+
+```{r}
+library(glmnet)
+n = 107
+k = 5
+grp_sz <- floor(n / k)
+
+# want to split x and y into grp_sz
+x <- prcomp(predictors, scale = TRUE, rank. = 5)$x %>% data.frame()
+y <- gdp_per_capita_current_US
+
+## FUNCTION (x, y)
+k_ = 1
+xs <- list()
+ys <- list()
+for (i in 1:n) {
+  if ((i-1) %% grp_sz == 0) {
+    if ((i + (grp_sz*2)) >= n) {
+      gr_x <- x[i:(n),]
+      gr_y <- y[i:(n),]
+    } else {
+      gr_x <- x[i:(i+grp_sz),]
+      gr_y <- y[i:(i+grp_sz),]
+    }
+    xs[[k_]] <- gr_x
+    ys[[k_]] <- gr_y
+    k_ <- k_ + 1
+  }
+}
+
+xs <- xs[1:length(xs)-1]
+ys <- ys[1:length(ys)-1]
+
+# for (gr in xs[2:length(xs)]) {
+models <- list()
+for (i in 1:length(xs)) {
+  x_ <- xs[[i]]
+  y_ <- ys[[i]]
+  goo <- cbind(y_, x_) %>% rename(gdp_usd = `GDP_per_capita_(current_US$)`)
+  # model <- lm(gdp_usd ~ PC1 + PC2 + PC3 + PC4 + PC5, goo)
+  model <- glmnet(x_ %>% as.matrix(), y_ %>% as.matrix(), alpha=1, lambda = 5)
+  models[[i]] <- model
+}
+
+
+sqr <- function (x) {
+  x * x
+}
+
+acc <- 0
+for (m in models) {
+  foo <- cbind(predict(m, s=5, newx=x_ %>% as.matrix()) %>% data.frame(), y_ ) %>%
+  mutate(
+    res = s1 - `GDP_per_capita_(current_US$)`,
+    rse = res^2
+  )
+  
+  rse <- (foo$rse %>% mean())
+  acc <- acc + rse
+}
+(acc / (models %>% length()))
+(acc / (models %>% length())) %>% sqrt()
+```
+
+CORRECT LASSO
+
+
+
 
 
 ```{r}

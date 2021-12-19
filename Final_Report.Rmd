@@ -2,14 +2,14 @@
 title: "STAT 340 Final Report"
 date: "12/18/2021"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     toc: yes
     theme: united
     number_sections: yes
     df_print: paged
     code_folding: hide
-  pdf_document:
-    toc: yes
 ---
 
 <!-- Setup code -->
@@ -21,6 +21,7 @@ library(tidyr)
 library(corrplot)
 library(corrr)
 theme_set(theme_bw())
+select <- dplyr::select
 ```
 ```{r read_data_silently, message=FALSE, warning=FALSE, include=FALSE}
 country <- read_csv("data/Country.csv", col_types = cols())
@@ -262,12 +263,206 @@ y <- gdp_per_capita_current_US
 x <- prcomp(predictors, scale = TRUE, rank. = 5)$x %>% data.frame()
 goo <- cbind(y, x) %>% rename(gdp_usd = `GDP_per_capita_(current_US$)`)
 model <- lm(gdp_usd ~ PC1 + PC2 + PC3 + PC4 + PC5, goo)
-model %>% summary()
+# model %>% summary()
+```
+
+```{r}
+n = 107
+k = 5
+grp_sz <- floor(n / k)
+
+# want to split x and y into grp_sz
+x <- prcomp(predictors, scale = TRUE, rank. = 5)$x %>% data.frame()
+y <- gdp_per_capita_current_US
+
+## FUNCTION (x, y)
+k_ = 1
+xs <- list()
+ys <- list()
+for (i in 1:n) {
+  if ((i-1) %% grp_sz == 0) {
+    if ((i + (grp_sz*2)) >= n) {
+      gr_x <- x[i:(n),]
+      gr_y <- y[i:(n),]
+    } else {
+      gr_x <- x[i:(i+grp_sz),]
+      gr_y <- y[i:(i+grp_sz),]
+    }
+    xs[[k_]] <- gr_x
+    ys[[k_]] <- gr_y
+    k_ <- k_ + 1
+  }
+}
+
+xs <- xs[1:length(xs)-1]
+ys <- ys[1:length(ys)-1]
+
+# for (gr in xs[2:length(xs)]) {
+models <- list()
+for (i in 1:length(xs)) {
+  xs_ <- data.frame()
+  ys_ <- data.frame()
+  for (j in 1:length(xs)) {
+    if (i != j) {
+      xs_ <- bind_rows(xs_, xs[[j]])
+      ys_ <- bind_rows(ys_, ys[[j]])
+    }
+  }
+  x_ <- xs_
+  y_ <- ys_
+  goo <- cbind(y_, x_) %>% rename(gdp_usd = `GDP_per_capita_(current_US$)`)
+  model <- lm(gdp_usd ~ PC1 + PC2 + PC3 + PC4 + PC5, goo)
+  models[[i]] <- model
+}
+sqr <- function (x) {
+  x * x
+}
+
+accr2 <- 0
+acc <- 0
+for (i in 1:length(xs)) {
+  m <- models[[i]]
+  foo <- cbind(predict(m, xs[[i]]) %>% data.frame(), ys[[i]]) %>% 
+  mutate(
+    res = . - `GDP_per_capita_(current_US$)`,
+    rse = res^2,
+    rss = res ^ 2,
+    tss = (. - mean(`GDP_per_capita_(current_US$)`))^2
+  )
+  r2 <- sum(foo$rss) / sum(foo$tss)
+  acc <- acc + (foo$rse %>% mean())
+  accr2 <- accr2 + r2
+  
+}
+
+tibble(
+  r2 = (r2 <- (accr2 / (models %>% length()))),
+  mse = (acc / (models %>% length())),
+  rmse = (acc / (models %>% length())) %>% sqrt()
+)
 ```
 
 ## Model/test 2
 
 *Paragraph on model/test 2*
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(glmnet)
+```
+
+
+```{r}
+# grid <- 10 ^ seq(10,-2, length = 100)
+grid <- c(0, 1, 2, 5, 10, 100, 500, 1000)
+
+results <- tibble(
+  lambda=-1, mse=-1, rmse=-1, r2=-1
+)
+
+for (lambda in grid) {
+  # lambda = 5
+  n = 107
+  k = 5
+  grp_sz <- floor(n / k)
+  
+  # want to split x and y into grp_sz
+  x <- prcomp(predictors, scale = TRUE, rank. = 5)$x %>% data.frame()
+  y <- gdp_per_capita_current_US
+  
+  ## FUNCTION (x, y)
+  k_ = 1
+  xs <- list()
+  ys <- list()
+  for (i in 1:n) {
+    if ((i - 1) %% grp_sz == 0) {
+      if ((i + (grp_sz * 2)) >= n) {
+        gr_x <- x[i:(n), ]
+        gr_y <- y[i:(n), ]
+      } else {
+        gr_x <- x[i:(i + grp_sz), ]
+        gr_y <- y[i:(i + grp_sz), ]
+      }
+      xs[[k_]] <- gr_x
+      ys[[k_]] <- gr_y
+      k_ <- k_ + 1
+    }
+  }
+  
+  xs <- xs[1:length(xs) - 1]
+  ys <- ys[1:length(ys) - 1]
+  
+  # for (gr in xs[2:length(xs)]) {
+  models <- list()
+  for (i in 1:length(xs)) {
+    xs_ <- data.frame()
+    ys_ <- data.frame()
+    for (j in 1:length(xs)) {
+      if (i != j) {
+        xs_ <- bind_rows(xs_, xs[[j]])
+        ys_ <- bind_rows(ys_, ys[[j]])
+      }
+    }
+    x_ <- xs_
+    y_ <- ys_
+    goo <-
+      cbind(y_, x_) %>% rename(gdp_usd = `GDP_per_capita_(current_US$)`)
+    model <-
+      glmnet(x_ %>% as.matrix(),
+             y_ %>% as.matrix(),
+             alpha = 1,
+             lambda = lambda)
+    models[[i]] <- model
+  }
+  sqr <- function (x) {
+    x * x
+  }
+  
+  acc <- 0
+  accr2 <- 0
+  for (i in 1:length(xs)) {
+    m <- models[[i]]
+    foo <-
+      cbind(predict(m, s = lambda, newx = xs[[i]] %>% as.matrix()) %>% data.frame(),
+            ys[[i]]) %>%
+      mutate(
+        res = s1 - `GDP_per_capita_(current_US$)`,
+        rse = res ^ 2,
+        rss = res ^ 2,
+        tss = (s1 - mean(`GDP_per_capita_(current_US$)`))^2
+        )
+    r2 <- sum(foo$rss) / sum(foo$tss)
+    rse <- (foo$rse %>% mean())
+    accr2 <- accr2 + r2
+    acc <- acc + rse
+  }
+  mse <- (acc / (models %>% length()))
+  rmse <- (acc / (models %>% length())) %>% sqrt()
+  r2 <- (accr2 / (models %>% length()))
+  
+  results <- results %>% rbind(
+    c(lambda, rmse, mse, r2)
+  )
+}
+results <- results %>% filter(lambda != -1)
+results %>% arrange(-mse) 
+```
+
+```{r}
+mse_results <- results %>% arrange(-mse) %>% tail(1)
+r2_results <- results %>% arrange(r2) %>% tail(1)
+
+mse_results
+r2_results
+
+x <- ind5 %>% select(-`GDP_per_capita_(current_US$)`, -`CountryName`) %>% as.matrix()
+y <- ind5$`GDP_per_capita_(current_US$)` %>% as.matrix()
+out <- glmnet(x, y, alpha=1, lambda=mse_results$lambda)
+lasso.coef <- predict(out, type="coefficients", s=mse_results$lambda)
+lasso.coef2 <- predict(out, type="coefficients", s=r2_results$lambda)
+lasso.coef
+lasso.coef2
+```
+
 
 ## Model/test 3
 
