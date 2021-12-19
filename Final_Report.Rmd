@@ -58,7 +58,6 @@ p_missing_ <- function(d) {
 # Number of missing values for each indicator
 
 max_percent_missing <- 0.2
-
 # Filter to only have indicators that have less than max_percent_missing percent of missing values
 sapply(ind2, function(x)
   sum(is.na (x))) %>%
@@ -107,6 +106,7 @@ my_row_names <- sapply(ind3, function(x)
   select(., everything()) %>% 
   row.names()
 
+max_percent_missing <- 0.05
 chosen_indicators_ <- sapply(ind3, function(x)
   sum(is.na (x))) %>%
   as.data.frame() %>%
@@ -249,9 +249,9 @@ pairs(foo[, 5:9], col = foo$Cluster)
 
 ### Hierarchical clustering
 
-```{r heir_clust}
+```{r heir_clust, warning=FALSE}
 # heir clustering
-foo[, 5:142] %>% scale() %>% data.frame() %>% dist() %>% hclust() %>% plot(labels = FALSE)
+foo[, 5:75] %>% scale() %>% data.frame() %>% dist() %>% hclust() %>% plot(labels = FALSE)
 ```
 
 ### Linear model on PCA
