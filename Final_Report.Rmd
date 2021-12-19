@@ -241,9 +241,9 @@ pairs(foo[, 5:9], col = foo$Cluster)
 
 ### Hierarchical clustering
 
-```{r heir_clust}
+```{r heir_clust, warning=FALSE}
 # heir clustering
-foo[, 5:142] %>% scale() %>% data.frame() %>% dist() %>% hclust() %>% plot(labels = FALSE)
+foo[, 5:75] %>% scale() %>% data.frame() %>% dist() %>% hclust() %>% plot(labels = FALSE)
 ```
 
 ### Linear model on PCA
