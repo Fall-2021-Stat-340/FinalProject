@@ -186,10 +186,18 @@ Many other assorted metrics are included in the dataset. Environmental metrics s
 
 The vast amount of data meant that there was a lot to explore, but we decided to focus on answering the following question:
 
-*What indicators have the greatest impact on a country's economic production?*
+***
 
-There are massive inequalities in the economic health of countries worldwide, ranging from superpowers like the United States and China to developing countries like Somalia and Venezuela. We wanted to find out what specific factors are most responsible for these inequalities. Answering this question will not directly fix inequality, but it is important to identify the primary causes so that more attention can be spent addressing relevant issues in poor or developing countries.
+1. What indicators have the greatest impact on a country's GDP per capita?
+  a. Are there relationships between those indicators? 
+2. Can we use these indicators to predict a country's GDP per capita?
+  a. How does that compare with other prediction methods?
 
+***
+
+For our first statistical question, given the various metrics we have in our data, we thought it would be interesting to see how different factors impact a country's GDP per capita since that is a relatively prominent indicator of a country's economic health. We chose to use GDP as the deciding metric for comparison since it gives information about the size of the economy and how an economy is performing. The growth rate of GDP is often used as an indicator of the general health of the economy, so in a broader sense, an increase in real GDP is interpreted as a sign that the economy is doing well. We also thought figuring out if there are any relationships between said metrics would be interesting because along with knowing what indicators have the greatest impact on a country's GDP, being able to pinpoint how those indicators are related and if they're all part of a certain category, for instance, if the most impactful metrics were all related to healthcare, we would be able to gain a more general insight on what general system of a country impacts it's GDP and economy.
+
+Our second statistical question delves into the relationship between the indicators we are looking for and GDP. We wanted to find out if we could use the indicators we found to predict a country's GDP because, hypothetically, we could be able to use the most impactful metrics that impact a country's economy to predict how much, and to what extent that impact would be. Along with this, since the end goal of us asking this question is to derive a successful GDP model predictor, we also wanted to look into if using the most impactful indicators is the best metric for prediction by comparing the results of that model with other prediction methods.
 
 # Analysis
 > A summary, including as many plots, tables, R model outputs, etc as necessary to show how you
