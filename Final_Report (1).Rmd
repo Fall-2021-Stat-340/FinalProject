@@ -152,26 +152,17 @@ Names/NetID:
 -	Shawn Riemer: seriemer
 
 # Abstract
-> An abstract of at most 300 words giving an overview of your data, the question(s) you tried to
-answer, and a brief summary of your findings.
 
-The data that we analyzed throughout the semester is the World Development Indicators dataset, collected by the World Bank and published to Kaggle. This dataset includes 1,344 different indicators for 247 countries between 1960 to 2015, although much of the data is missing. The indicators cover a wide range of economic, health, and assorted other metrics. We chose to investigate these indicators to find which ones have the greatest impact on a country's economic strength, which we defined as GDP per capita. We first refined the data we worked with to only include 107 countries and 70 indicators, which minimized the amount of missing data. After implementing a LASSO regression model, we found that some of the most important indicators are CO2 emissions, adolescent fertility rate, and urban population growth. Through kmeans clustering we then found that there was definite clustering behavior. *sentence on analyzing these results* Multiple models were then developed to try to predict a country’s GDP. Between LASSO regression and linear regression after PCA, the two models had very similar mean sum square errors, but the R^2 value for the LASSO regression model was signifcantly better.
+The data that we analyzed throughout the semester is the World Development Indicators dataset, collected by the World Bank and published to Kaggle. This dataset includes 1,344 different indicators for 247 countries between 1960 to 2015, although much of the data is missing. The indicators cover a wide range of economic, health, and assorted other metrics. We chose to investigate these indicators to find which ones have the greatest impact on a country's economic strength, which we defined as GDP per capita. We first refined the data we worked with to only include 107 countries and 76 indicators, which minimized the amount of missing data. After implementing a LASSO regression model, we found that some of the most important indicators are CO2 emissions, adolescent fertility rate, and urban population growth. Through k-means clustering we then found that there was definite clustering behavior. Multiple models were then developed to try to predict a country’s GDP. Between LASSO regression and linear regression after PCA, the two models had very similar mean sum square errors, but the R^2 value for the LASSO regression model with the optimal lambda was significantly better.
 
 
 # Dataset
-> A brief introduction describing your data set: where it came from, who gathered it and a brief
-description of why your group found this data interesting and why your reader should care. If you
-obtained your data set from Kaggle or a similar repository, it is not enough to simply say “This was
-collected by user xyz and posted to Kaggle”. You should be able to explain the specific source of your data.
 
 Our analysis used the World Development Indicators dataset ([link](https://www.kaggle.com/kaggle/world-development-indicators)). We accessed the dataset from Kaggle which included a cleaned version of the raw data from The World Bank ([link](https://datacatalog.worldbank.org/search/dataset/0037712)). It includes two files. The first is Country.csv, which includes a row for each of the 247 countries present in the dataset, along with the country's name, code, currency, and region. The second file, Indicators.csv, contains a comprehensive list of over 1,300 indicators related to economic development, health, and more. Some of these indicators include GDP per capita, unemployment rate, adolescent fertility rate, and urban population. Indicators for years between 1960 and 2015 are present, although not every combination of country, indicator, and year is available. More than 70% of the total data is missing, so careful consideration will be taken when choosing what countries, indicators, and years to analyze.
 
 The data was compiled by the World Bank, an international financial organization that provides support for lower-income countries. They track the indicators found in this dataset and compile them for anayone to use. Our group was drawn to this dataset because of its importance and relevance. The indicators included comprise some of the most discussed and debated inequalities between countries. While we cannot solve these inequalities just by looking at data, we are excited to investigate and identify prominent relationships between features.
 
 # Variables
-> A description of the variables available in your data set, with more details for the variables that are
-likely to be relevant to your question (you may copy-paste this from your previous drafts, if you
-wish).
 
 With 1,344 total unique indicators there are too many to name them all, but we will focus on a handful of them. For our economic analysis, we will use `GDP_per_capita_(current_US$)`, which is a country's economic output per citizen adjusted to the United States Dollar currency. There are many variations of GDP in the dataset, but GDP per capita is commonly used to compare the economic states of different countries, so we will use that one. A couple of variables that we expect impact a country's economic strenght are unemployment rate, `Unemployment,_total_(%_of_total_labor_force)`, and relative military expenditure, `Military_expenditure_(%_of_GDP)`. 
 
@@ -181,9 +172,8 @@ Many other assorted metrics are included in the dataset. Environmental metrics s
 
 
 # Statistical Question
-> A discussion of your statistical question of interest.
 
-The vast amount of data meant that there was a lot to explore, but we decided to focus on answering the following question:
+The vast amount of data meant that there was a lot to explore, but we decided to focus on answering the following questions:
 
 ***
 
@@ -197,11 +187,6 @@ For our first statistical question, given the various metrics we have in our dat
 Our second statistical question delves into the relationship between the indicators we are looking for and GDP. We wanted to find out if we could use the indicators we found to predict a country's GDP because, hypothetically, we could be able to use the most impactful metrics that impact a country's economy to predict how much, and to what extent that impact would be. Along with this, since the end goal of us asking this question is to derive a successful GDP model predictor, we also wanted to look into if using the most impactful indicators is the best metric for prediction by comparing the results of that model with other prediction methods such as dimensionality reduction.
 
 # Analysis
-> A summary, including as many plots, tables, R model outputs, etc as necessary to show how you
-tried to answer your statistical question. You should explain the reasoning behind your decisions to
-use particular methods, models or tests. This summary need not include only successes– if you tried
-something that turned out not to work, take some time to discuss it, why it might not have worked,
-and how your might fix the problem given more time.
 
 ## PCA & Clustering
 The first step of our analysis was refining our dataset to get it into a form where we could easily implement our models. The data was initially organized so that every combination of Country, Year, and Indicator was its own row, and a significant amount of data was missing. Our first attempt at solving this issue was to reduce the dimensionality of the data using Principal Component Analysis. We found a linear model using the first five principal components and tried finding clustering patterns within the data. The plot below shows that there were three fairly distinct clusters, but based on the feedback on our progress reports and our own discussions, we realized that we had strayed off topic and were not actually addressing our statistical questions, so we scrapped that approach. More information on that approach can be found in Appendix 1.
@@ -239,11 +224,9 @@ pairs(foo[, 5:9], col = foo$Cluster)
 We then started from scratch with the original dataset. We underwent an iterative process to minimize the amount of missing data by selectively removing certain countries and indicators. We then aggregated each indicator as a mean over all years and pivoted the indicators to columns, so that our final dataset consisted of one row for each remaining country. A more in-depth explanation of the data cleaning process can be found in Appendix 1. At this point we were left with 107 countries and 76 indicators, and were ready to start implementing models for finding the most important indicators.
 
 
-*Paragraph on model/test 1*
-
 ## LASSO Regression {.tabset .tabset-pills}
 
-To find the indicators that have the greatest impact on a country’s GDP we used LASSO regression. The first step for doing this was to find the lambda parameter that optimized the model. We tried optimizing lambda based on both mean squared error and R^2. We found that for mean squared error, a lambda value of 100 was the best, and for R^2, 1,000 was the best. We then found the most important coefficients for each model, which gave us the same predictors. The most important predictors were adolescent fertility rate, urban population growth, and CO2 emissions in tons per capita. Others included population density, agricultural land as a percentage of land area, and merchandise trade as a percentage of GDP. A full table with the important indicators can be found in Appendix 2.
+To find the indicators that have the greatest impact on a country’s GDP we used LASSO regression. We did this so that we could filter out indicators that did not correlate well with a country's GDP. Furthermore, LASSO was chosen instead of other methods because it sets coefficients to 0, which is what we want since we're doing variable selection. The first step for doing this was to find the lambda parameter that optimized the model. We tried optimizing lambda based on both mean squared error and R^2. We found that for mean squared error, a lambda value of 100 was the best, and for R^2, 1,000 was the best. We then found the most important coefficients for each model, which gave us the same predictors. The most important predictors were adolescent fertility rate, urban population growth, and CO2 emissions in tons per capita. Others included population density, agricultural land as a percentage of land area, and merchandise trade as a percentage of GDP. A full table with the important indicators can be found in Appendix 2.
 
 Some takeaways can be made from these findings. Clearly, there are a very diverse group of factors that impact a country's GDP, covering many different sectors. The coeficient of adolescent fertility rate was -11,862. The fact that this number was negative indicates that countries where teenage pregnancy is widespread tend to have lower economic strength. This finding is expected, as healthcare such as birth control are likely to be more available in richer countries.
 
@@ -254,7 +237,7 @@ Finally, the coefficient for CO2 emissions was 664. In this case, this number is
 
 ## LASSO vs PCA Accuracy
 
-While we used a LASSO regression model to answer our first statistical question, there are a number of different models that we could have chosen. That decision led us to investigate how well a different model would work for predicting a country’s GDP. We decided to also build a linear regression model using PCA compare the two The metrics that we compared them on were mean sum of squares (MSS) error and R^2 score, and we found these metrics by performing cross validation with 5 folds on each model. The values that we found are shown in the tables below. The MSE values were similar for both models, but for the LASSO regression model, one choice of lambda (1000) was able to achieve a significantly higher R^2 value of 0.94.
+While we used a LASSO regression model to answer our first statistical question, there are a number of different models that we could have chosen. That decision led us to investigate how well a different model would work for predicting a country’s GDP. We decided to also build a linear regression model using PCA to compare the two The metrics that we compared them on were mean sum of squares (MSS) error and R^2 score, and we found these metrics by performing cross validation with 5 folds on each model. Our PCA model was built by using the first five principal components in a linear regression. The values that we found are shown in the tables below. The MSE values were similar for both models, but for the LASSO regression model, one choice of lambda (1000) was able to achieve a significantly higher R^2 value of 0.94.
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 library(glmnet)
@@ -450,11 +433,9 @@ tibble(
 
 
 
-
 # Conclusion
-> A brief summary of your findings and potential future research questions
 
-We can take away a few conclusions from the analysis that we performed. First, it is clear that different indicators impact a country’s GDP to varying extents. Some of the most important indicators are adolescent fertility rate, urban population growth, and CO2 emissions per capita. CLearly, indicators spanning health and economic fields are relevant to country's GDPs. We also found that indicators can be used to predict GDP fairly well. LASSO regression was the most successful model for doing so, but linear regression using PCA was not far behind.
+We can take away a few conclusions from the analysis that we performed. First, it is clear that different indicators impact a country’s GDP to varying extents. Some of the most important indicators are adolescent fertility rate, urban population growth, and CO2 emissions per capita. CLearly, indicators spanning health and economic fields are relevant to country's GDPs. We also found that indicators can be used to predict GDP fairly well. LASSO regression was the most successful model for doing so, but linear regression using PCA was not far behind in terms of MSE scores.
 
 While we are pleased with our findings, there were multiple issues that we dealt with that could have impacted our results. The enormous amount of missing data led to us having to remove nearly half the countries and the majority of available indicators. We also ended up performing regression with 107 rows and 76 columns, which is far from ideal. More sophisticated approaches could be tried in the future to address these problems. Rather than removing missing data, more research could be done to fill in the data. Much of what was missing from our dataset likely could have been found through additional research, but that simply was not realistic for us to pursue. If we had not needed to remove half of our countries, our regression results would have been more meaningful. 
 
